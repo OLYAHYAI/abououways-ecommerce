@@ -1,0 +1,321 @@
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import Head from 'next/head'
+import Link from 'next/link'
+import Header from '../../components/Header'
+import Footer from '../../components/Footer'
+import { products } from '../../utils/mockData'
+import { useCart } from '../../utils/CartContext'
+import { useLanguage } from '../../utils/LanguageContext'
+import { getTranslation } from '../../utils/translations'
+
+export default function ProductDetail() {
+  const router = useRouter()
+  const { id } = router.query
+  const { addToCart } = useCart()
+  const { language, isRTL } = useLanguage()
+  
+  const [product, setProduct] = useState(null)
+  const [selectedSize, setSelectedSize] = useState('')
+  const [selectedColor, setSelectedColor] = useState('')
+  const [quantity, setQuantity] = useState(1)
+  const [activeImage, setActiveImage] = useState(0)
+
+  useEffect(() => {
+    if (id) {
+      const foundProduct = products.find(p => p.id === parseInt(id))
+      setProduct(foundProduct)
+      if (foundProduct) {
+        setSelectedSize(foundProduct.sizes?.[0] || '')
+        setSelectedColor(foundProduct.colors?.[0] || '')
+      }
+    }
+  }, [id])
+
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart({
+        ...product,
+        selectedSize,
+        selectedColor,
+        quantity
+      })
+      alert(getTranslation(language, 'addedToCart'))
+    }
+  }
+
+  if (!product) {
+    return (
+      <div className="moroccan-pattern" dir={isRTL ? 'rtl' : 'ltr'}>
+        <Header />
+        <div className="container" style={{ padding: '100px 0', textAlign: 'center' }}>
+          <h2>{getTranslation(language, 'productNotFound')}</h2>
+          <Link href="/products">
+            <button className="btn btn-primary" style={{ marginTop: '2rem' }}>
+              {getTranslation(language, 'backToProducts')}
+            </button>
+          </Link>
+        </div>
+        <Footer />
+      </div>
+    )
+  }
+
+  return (
+    <>
+      <Head>
+        <title>{product.name} - {getTranslation(language, 'siteTitle')}</title>
+        <meta name="description" content={product.description} />
+      </Head>
+
+      <div className="moroccan-pattern" dir={isRTL ? 'rtl' : 'ltr'}>
+        <Header />
+
+        {/* Breadcrumb */}
+        <div className="container" style={{ padding: '2rem 0 1rem' }}>
+          <nav style={{ fontSize: '0.9rem', color: '#6c757d' }}>
+            <Link href="/" style={{ color: '#0066cc' }}>{getTranslation(language, 'home')}</Link>
+            {' > '}
+            <Link href="/products" style={{ color: '#0066cc' }}>{getTranslation(language, 'products')}</Link>
+            {' > '}
+            <span>{product.name}</span>
+          </nav>
+        </div>
+
+        {/* Product Detail */}
+        <section className="product-detail" style={{ padding: '40px 0 80px' }}>
+          <div className="container">
+            <div className="grid grid-2" style={{ gap: '4rem', alignItems: 'start' }}>
+              
+              {/* Product Images */}
+              <div>
+                <div style={{
+                  width: '100%',
+                  height: '500px',
+                  borderRadius: '15px',
+                  overflow: 'hidden',
+                  marginBottom: '1rem',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
+                }}>
+                  <img 
+                    src={product.image} 
+                    alt={product.name}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover'
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Product Info */}
+              <div>
+                <h1 style={{ 
+                  fontSize: '2.5rem', 
+                  color: '#c1272d', 
+                  marginBottom: '1rem' 
+                }}>
+                  {product.name}
+                </h1>
+
+                <div style={{ 
+                  fontSize: '2rem', 
+                  color: '#0066cc', 
+                  fontWeight: 'bold',
+                  marginBottom: '1.5rem' 
+                }}>
+                  {product.price} {getTranslation(language, 'currency')}
+                </div>
+
+                <div style={{
+                  padding: '1.5rem',
+                  backgroundColor: '#f8f9fa',
+                  borderRadius: '10px',
+                  marginBottom: '2rem'
+                }}>
+                  <p style={{ 
+                    fontSize: '1.1rem', 
+                    lineHeight: '1.8',
+                    margin: 0 
+                  }}>
+                    {product.description}
+                  </p>
+                </div>
+
+                {/* Product Details */}
+                <div style={{ marginBottom: '2rem' }}>
+                  <div style={{ marginBottom: '1rem' }}>
+                    <strong>{getTranslation(language, 'category')}:</strong> {product.category}
+                  </div>
+                  {product.artisan && (
+                    <div style={{ marginBottom: '1rem' }}>
+                      <strong>{getTranslation(language, 'artisan')}:</strong> {product.artisan}
+                    </div>
+                  )}
+                  {product.material && (
+                    <div style={{ marginBottom: '1rem' }}>
+                      <strong>{getTranslation(language, 'material')}:</strong> {product.material}
+                    </div>
+                  )}
+                  {product.origin && (
+                    <div style={{ marginBottom: '1rem' }}>
+                      <strong>{getTranslation(language, 'origin')}:</strong> {product.origin}
+                    </div>
+                  )}
+                  <div style={{ marginBottom: '1rem' }}>
+                    <strong>{getTranslation(language, 'availability')}:</strong>{' '}
+                    <span style={{ color: product.inStock ? '#28a745' : '#dc3545' }}>
+                      {product.inStock ? getTranslation(language, 'inStock') : getTranslation(language, 'outOfStock')}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Size Selection */}
+                {product.sizes && product.sizes.length > 0 && (
+                  <div style={{ marginBottom: '2rem' }}>
+                    <label style={{ 
+                      display: 'block', 
+                      marginBottom: '0.75rem',
+                      fontWeight: '600',
+                      fontSize: '1.1rem'
+                    }}>
+                      {getTranslation(language, 'size')}:
+                    </label>
+                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                      {product.sizes.map(size => (
+                        <button
+                          key={size}
+                          onClick={() => setSelectedSize(size)}
+                          style={{
+                            padding: '0.75rem 1.5rem',
+                            border: selectedSize === size ? '2px solid #c1272d' : '2px solid #dee2e6',
+                            backgroundColor: selectedSize === size ? '#c1272d' : 'white',
+                            color: selectedSize === size ? 'white' : '#333',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            fontWeight: '500',
+                            transition: 'all 0.3s'
+                          }}
+                        >
+                          {size}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Color Selection */}
+                {product.colors && product.colors.length > 0 && (
+                  <div style={{ marginBottom: '2rem' }}>
+                    <label style={{ 
+                      display: 'block', 
+                      marginBottom: '0.75rem',
+                      fontWeight: '600',
+                      fontSize: '1.1rem'
+                    }}>
+                      {getTranslation(language, 'color')}:
+                    </label>
+                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                      {product.colors.map(color => (
+                        <button
+                          key={color}
+                          onClick={() => setSelectedColor(color)}
+                          style={{
+                            padding: '0.75rem 1.5rem',
+                            border: selectedColor === color ? '2px solid #c1272d' : '2px solid #dee2e6',
+                            backgroundColor: selectedColor === color ? '#c1272d' : 'white',
+                            color: selectedColor === color ? 'white' : '#333',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            fontWeight: '500',
+                            transition: 'all 0.3s'
+                          }}
+                        >
+                          {color}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Quantity */}
+                <div style={{ marginBottom: '2rem' }}>
+                  <label style={{ 
+                    display: 'block', 
+                    marginBottom: '0.75rem',
+                    fontWeight: '600',
+                    fontSize: '1.1rem'
+                  }}>
+                    {getTranslation(language, 'quantity')}:
+                  </label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      style={{
+                        width: '40px',
+                        height: '40px',
+                        border: '2px solid #dee2e6',
+                        backgroundColor: 'white',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '1.2rem'
+                      }}
+                    >
+                      -
+                    </button>
+                    <span style={{ 
+                      fontSize: '1.2rem', 
+                      fontWeight: '600',
+                      minWidth: '40px',
+                      textAlign: 'center'
+                    }}>
+                      {quantity}
+                    </span>
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      style={{
+                        width: '40px',
+                        height: '40px',
+                        border: '2px solid #dee2e6',
+                        backgroundColor: 'white',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '1.2rem'
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                {/* Add to Cart Button */}
+                <button
+                  onClick={handleAddToCart}
+                  disabled={!product.inStock}
+                  className="btn btn-primary"
+                  style={{
+                    width: '100%',
+                    padding: '1rem 2rem',
+                    fontSize: '1.2rem',
+                    marginBottom: '1rem'
+                  }}
+                >
+                  {getTranslation(language, 'addToCart')}
+                </button>
+
+                <Link href="/products">
+                  <button className="btn btn-secondary" style={{ width: '100%', padding: '1rem 2rem' }}>
+                    {getTranslation(language, 'backToProducts')}
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
+      </div>
+    </>
+  )
+}

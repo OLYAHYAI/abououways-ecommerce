@@ -27,7 +27,7 @@ export default function ProductCard({ product }) {
         <div className="product-badge">{getTranslation(language, 'available')}</div>
       )}
       
-      <Link href={`/products/${product.id}`}>
+      <Link href={`/product/${product.id}`}>
         <img 
           src={product.image} 
           alt={product.name}
@@ -131,7 +131,7 @@ export default function ProductCard({ product }) {
             {isAdding ? getTranslation(language, 'available') : !product.inStock ? getTranslation(language, 'notAvailable') : getTranslation(language, 'addToCart')}
           </button>
           
-          <Link href={`/products/${product.id}`}>
+          <Link href={`/product/${product.id}`}>
             <button 
               className="btn btn-outline"
               style={{
