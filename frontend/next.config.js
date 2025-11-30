@@ -2,13 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  output: 'export',
   images: {
     domains: ['images.unsplash.com', 'images.pexels.com', 'localhost'],
     unoptimized: true,
-  },
-  i18n: {
-    locales: ['ar'],
-    defaultLocale: 'ar',
   },
   experimental: {
     appDir: false,

@@ -1,0 +1,18 @@
+CLOUDFLARE PAGES - BUILD CONFIGURATION
+======================================
+
+Framework preset: Next.js (Static HTML Export)
+
+Build command:
+cd frontend && npm install && npm run build
+
+Build output directory:
+frontend/out
+
+Root directory (advanced):
+/ (leave default)
+
+Environment variables (Settings → Environment variables):
+NODE_VERSION = 18
+NEXT_PUBLIC_API_URL = https://api.abououways.ma
+NEXT_PUBLIC_SITE_URL = https://abououways-ecommerce.pages.dev
