@@ -11,16 +11,24 @@ export default function Products() {
   const [filteredProducts, setFilteredProducts] = useState(products)
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [selectedPriceRange, setSelectedPriceRange] = useState('all')
+  const [sortBy, setSortBy] = useState('featured')
   const [searchTerm, setSearchTerm] = useState('')
+  const [isLoaded, setIsLoaded] = useState(false)
   const { language, isRTL } = useLanguage()
 
-  const categories = ['all', 'قندورة', 'أحذية جلد أصيل']
+  const categories = ['all', 'shoes']
   const priceRanges = [
     { label: 'all', min: 0, max: Infinity },
-    { label: 'lessThan500', min: 0, max: 500 },
-    { label: 'range500to1000', min: 500, max: 1000 },
-    { label: 'range1000to2000', min: 1000, max: 2000 },
+    { label: 'lessThan1500', min: 0, max: 1500 },
+    { label: 'range1500to2000', min: 1500, max: 2000 },
     { label: 'moreThan2000', min: 2000, max: Infinity }
+  ]
+
+  const sortOptions = [
+    { value: 'featured', label: language === 'ar' ? 'المميزة' : 'Mis en avant' },
+    { value: 'price-low', label: language === 'ar' ? 'السعر: منخفض إلى مرتفع' : 'Prix: Croissant' },
+    { value: 'price-high', label: language === 'ar' ? 'السعر: مرتفع إلى منخفض' : 'Prix: Décroissant' },
+    { value: 'name', label: language === 'ar' ? 'الاسم' : 'Nom' }
   ]
 
   useEffect(() => {
@@ -41,210 +49,251 @@ export default function Products() {
 
     // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+      filtered = filtered.filter(product => {
+        const name = product.name[language] || product.name
+        const description = product.description[language] || product.description
+        return name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+               description.toLowerCase().includes(searchTerm.toLowerCase())
+      })
+    }
+
+    // Sort products
+    switch (sortBy) {
+      case 'price-low':
+        filtered.sort((a, b) => a.price - b.price)
+        break
+      case 'price-high':
+        filtered.sort((a, b) => b.price - a.price)
+        break
+      case 'name':
+        filtered.sort((a, b) => {
+          const nameA = a.name[language] || a.name
+          const nameB = b.name[language] || b.name
+          return nameA.localeCompare(nameB)
+        })
+        break
+      default: // featured
+        filtered.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0))
     }
 
     setFilteredProducts(filtered)
-  }, [selectedCategory, selectedPriceRange, searchTerm])
+    setIsLoaded(true)
+  }, [selectedCategory, selectedPriceRange, sortBy, searchTerm, language])
+
+  const pageTitle = language === 'ar' 
+    ? 'الأحذية الفاخرة - أبو أويس' 
+    : 'Chaussures de Luxe - Abououways'
+
+  const pageSubtitle = language === 'ar'
+    ? 'اكتشف مجموعتنا الاستثنائية من الأحذية الجلدية المغربية الأصلية'
+    : 'Découvrez notre collection exceptionnelle de chaussures en cuir marocaines authentiques'
 
   return (
     <>
       <Head>
-        <title>{getTranslation(language, 'products')} - {getTranslation(language, 'siteTitle')}</title>
-        <meta name="description" content={getTranslation(language, 'siteDescription')} />
-        <meta name="keywords" content={getTranslation(language, 'keywords')} />
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageSubtitle} />
+        <meta name="keywords" content={language === 'ar' ? 'أحذية جلد مغربية، فاخرة، حرفية' : 'chaussures cuir marocain, luxe, artisanat'} />
       </Head>
 
-      <div className="moroccan-pattern" dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className={`luxury-products ${isLoaded ? 'loaded' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
         <Header />
         
-        {/* Page Header */}
-        <section className="page-header" style={{
-          background: `linear-gradient(135deg, rgba(194, 39, 45, 0.9), rgba(0, 102, 204, 0.9)), url('https://images.pexels.com/photos/267202/pexels-photo-267202.jpeg?auto=compress&cs=tinysrgb&w=1600&h=400&fit=crop')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          color: 'white',
-          padding: '80px 0',
-          textAlign: 'center'
-        }}>
+        {/* Premium Page Header */}
+        <section className="products-hero">
+          <div className="hero-overlay"></div>
           <div className="container">
-            <h1 style={{ fontSize: '2.5rem', marginBottom: '1rem', color: 'white' }}>
-              {getTranslation(language, 'products')}
-            </h1>
-            <p style={{ fontSize: '1.2rem', marginBottom: '0' }}>
-              اكتشف مجموعتنا الفاخرة من الملابس التقليدية المغربية الأصلية
-            </p>
-          </div>
-        </section>
-
-        {/* Filters Section */}
-        <section className="filters" style={{ padding: '40px 0', backgroundColor: 'white' }}>
-          <div className="container">
-            <div className="filter-controls" style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              gap: '2rem',
-              alignItems: 'center',
-              justifyContent: 'space-between'
-            }}>
-              {/* Search */}
-              <div style={{ flex: '1', minWidth: '250px' }}>
-                <input
-                  type="text"
-                  placeholder={getTranslation(language, 'search')}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '0.75rem 1rem',
-                    border: '2px solid #dee2e6',
-                    borderRadius: '25px',
-                    fontSize: '1rem',
-                    fontFamily: 'Tajawal, sans-serif'
-                  }}
-                />
-              </div>
-
-              {/* Category Filter */}
-              <div style={{ minWidth: '200px' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                  {getTranslation(language, 'category')}
-                </label>
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="form-select"
-                  style={{ borderRadius: '25px' }}
-                >
-                  {categories.map(category => (
-                    <option key={category} value={category}>
-                      {category === 'all' ? getTranslation(language, 'all') : 
-                       category === 'قندورة' ? getTranslation(language, 'gandoura') :
-                       getTranslation(language, 'leatherShoes')}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Price Range Filter */}
-              <div style={{ minWidth: '200px' }}>
-                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>
-                  {getTranslation(language, 'priceRange')}
-                </label>
-                <select
-                  value={selectedPriceRange}
-                  onChange={(e) => setSelectedPriceRange(e.target.value)}
-                  className="form-select"
-                  style={{ borderRadius: '25px' }}
-                >
-                  {priceRanges.map(range => (
-                    <option key={range.label} value={range.label}>
-                      {getTranslation(language, range.label)}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Results Count */}
-            <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-              <p style={{ fontSize: '1.1rem', color: '#6c757d' }}>
-                {getTranslation(language, 'productsFound')}: {filteredProducts.length}
+            <div className="hero-content">
+              <h1 className="page-title">
+                {language === 'ar' ? 'مجموعة الأحذية الفاخرة' : 'Collection de Chaussures de Luxe'}
+              </h1>
+              <p className="page-subtitle">
+                {pageSubtitle}
               </p>
             </div>
           </div>
         </section>
 
-        {/* Products Grid */}
-        <section className="products-grid" style={{ padding: '60px 0' }}>
+        {/* Filters Section */}
+        <section className="filters-luxury">
           <div className="container">
-            {filteredProducts.length > 0 ? (
-              <div className="grid grid-3">
-                {filteredProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
-             ) : (
-              <div style={{ textAlign: 'center', padding: '60px 0' }}>
-                <h3 style={{ color: '#c1272d', marginBottom: '1rem' }}>
-                  {getTranslation(language, 'noProductsFound')}
+            <div className="filters-wrapper">
+              {/* Sidebar Filters */}
+              <div className="filters-sidebar">
+                <h3 className="filters-title">
+                  {language === 'ar' ? 'التصفية' : 'Filtres'}
                 </h3>
-                <p style={{ fontSize: '1.1rem', color: '#6c757d' }}>
-                  {getTranslation(language, 'tryDifferentFilters')}
-                </p>
+                
+                {/* Search */}
+                <div className="filter-group">
+                  <label className="filter-label">
+                    {language === 'ar' ? 'البحث' : 'Recherche'}
+                  </label>
+                  <div className="search-input-wrapper">
+                    <input
+                      type="text"
+                      placeholder={language === 'ar' ? 'ابحث عن منتج...' : 'Rechercher un produit...'}
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="search-input"
+                    />
+                    <span className="search-icon">🔍</span>
+                  </div>
+                </div>
+
+                {/* Category Filter */}
+                <div className="filter-group">
+                  <label className="filter-label">
+                    {language === 'ar' ? 'الفئة' : 'Catégorie'}
+                  </label>
+                  <div className="category-options">
+                    {categories.map(category => (
+                      <button
+                        key={category}
+                        onClick={() => setSelectedCategory(category)}
+                        className={`category-option ${selectedCategory === category ? 'active' : ''}`}
+                      >
+                        {category === 'all' 
+                          ? (language === 'ar' ? 'الكل' : 'Tous')
+                          : (language === 'ar' ? 'أحذية' : 'Chaussures')
+                        }
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Price Range Filter */}
+                <div className="filter-group">
+                  <label className="filter-label">
+                    {language === 'ar' ? 'نطاق السعر' : 'Gamme de prix'}
+                  </label>
+                  <div className="price-options">
+                    {priceRanges.map(range => (
+                      <button
+                        key={range.label}
+                        onClick={() => setSelectedPriceRange(range.label)}
+                        className={`price-option ${selectedPriceRange === range.label ? 'active' : ''}`}
+                      >
+                        {range.label === 'all' 
+                          ? (language === 'ar' ? 'الكل' : 'Tous')
+                          : range.label === 'lessThan1500'
+                          ? (language === 'ar' ? 'أقل من 1500 درهم' : 'Moins de 1500 DH')
+                          : range.label === 'range1500to2000'
+                          ? (language === 'ar' ? '1500 - 2000 درهم' : '1500 - 2000 DH')
+                          : (language === 'ar' ? 'أكثر من 2000 درهم' : 'Plus de 2000 DH')
+                        }
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
-            )}
+
+              {/* Main Content */}
+              <div className="products-main">
+                {/* Top Bar */}
+                <div className="products-topbar">
+                  <div className="results-count">
+                    <span className="count-number">{filteredProducts.length}</span>
+                    <span className="count-text">
+                      {language === 'ar' ? 'منتج متوفر' : 'produit(s) disponible(s)'}
+                    </span>
+                  </div>
+                  
+                  <div className="sort-wrapper">
+                    <label className="sort-label">
+                      {language === 'ar' ? 'ترتيب حسب' : 'Trier par'}
+                    </label>
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="sort-select"
+                    >
+                      {sortOptions.map(option => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Products Grid */}
+                <div className="products-grid-luxury">
+                  {filteredProducts.length > 0 ? (
+                    filteredProducts.map((product, index) => (
+                      <div 
+                        key={product.id} 
+                        className="product-item"
+                        style={{ 
+                          animationDelay: `${index * 0.1}s`,
+                          opacity: isLoaded ? 1 : 0,
+                          transform: isLoaded ? 'translateY(0)' : 'translateY(20px)'
+                        }}
+                      >
+                        <ProductCard product={product} />
+                      </div>
+                    ))
+                   ) : (
+                    <div className="no-products">
+                      <div className="no-products-icon">🔍</div>
+                      <h3 className="no-products-title">
+                        {language === 'ar' ? 'لا توجد منتجات' : 'Aucun produit trouvé'}
+                      </h3>
+                      <p className="no-products-text">
+                        {language === 'ar' 
+                          ? 'جرب تغيير الفلاتر أو البحث عن شيء آخر'
+                          : 'Essayez de modifier les filtres ou de rechercher autre chose'
+                        }
+                      </p>
+                      <button 
+                        onClick={() => {
+                          setSelectedCategory('all')
+                          setSelectedPriceRange('all')
+                          setSearchTerm('')
+                          setSortBy('featured')
+                        }}
+                        className="btn btn-outline"
+                      >
+                        {language === 'ar' ? 'إعادة تعيين الفلاتر' : 'Réinitialiser les filtres'}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Info Section */}
-        <section className="info-section" style={{
-          background: `linear-gradient(135deg, #07632a, #0066cc)`,
-          color: 'white',
-          padding: '60px 0',
-          textAlign: 'center'
-        }}>
+        {/* Quality Assurance */}
+        <section className="quality-assurance">
           <div className="container">
-            <h2 style={{ fontSize: '2rem', marginBottom: '1rem', color: 'white' }}>
-              ضمان الجودة والأصالة
-            </h2>
-            <p style={{ fontSize: '1.1rem', marginBottom: '2rem', maxWidth: '600px', margin: '0 auto 2rem' }}>
-              جميع منتجاتنا مصنوعة يدوياً من خامات عالية الجودة وتحمل ضمان الأصالة المغربية
-            </p>
-            <div className="grid grid-3">
-              <div>
-                <div style={{
-                  width: '60px',
-                  height: '60px',
-                  backgroundColor: '#d4af37',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 1rem',
-                  fontSize: '1.5rem'
-                }}>
-                  ✓
+            <div className="quality-content">
+              <h2 className="quality-title">
+                {language === 'ar' ? 'ضمان الجودة والأصالة' : 'Garantie de Qualité et d\'Authenticité'}
+              </h2>
+              <p className="quality-subtitle">
+                {language === 'ar'
+                  ? 'جميع منتجاتنا مصنوعة يدوياً من خامات عالية الجودة وتحمل ضمان الأصالة المغربية'
+                  : 'Tous nos produits sont fabriqués à la main à partir de matériaux de haute qualité et portent la garantie d\'authenticité marocaine'
+                }
+              </p>
+              
+              <div className="quality-features">
+                <div className="quality-feature">
+                  <div className="quality-icon">✨</div>
+                  <h4>{language === 'ar' ? 'جودة استثنائية' : 'Qualité Exceptionnelle'}</h4>
+                  <p>{language === 'ar' ? 'أفضل الخامات والخياطة الدقيقة' : 'Meilleurs matériaux et couture précise'}</p>
                 </div>
-                <h4 style={{ marginBottom: '0.5rem' }}>جودة عالية</h4>
-                <p>أفضل الخامات والخياطة الدقيقة</p>
-              </div>
-              <div>
-                <div style={{
-                  width: '60px',
-                  height: '60px',
-                  backgroundColor: '#d4af37',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 1rem',
-                  fontSize: '1.5rem'
-                }}>
-                  ✓
+                <div className="quality-feature">
+                  <div className="quality-icon">🏆</div>
+                  <h4>{language === 'ar' ? 'أصالة مضمونة' : 'Authenticité Garantie'}</h4>
+                  <p>{language === 'ar' ? 'منتجات مغربية 100% أصيلة' : 'Produits marocains 100% authentiques'}</p>
                 </div>
-                <h4 style={{ marginBottom: '0.5rem' }}>أصالة مضمونة</h4>
-                <p>منتجات مغربية 100% أصيلة</p>
-              </div>
-              <div>
-                <div style={{
-                  width: '60px',
-                  height: '60px',
-                  backgroundColor: '#d4af37',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto 1rem',
-                  fontSize: '1.5rem'
-                }}>
-                  ✓
+                <div className="quality-feature">
+                  <div className="quality-icon">💎</div>
+                  <h4>{language === 'ar' ? 'رضا العملاء' : 'Satisfaction Client'}</h4>
+                  <p>{language === 'ar' ? 'آلاف العملاء السعداء' : 'Des milliers de clients satisfaits'}</p>
                 </div>
-                <h4 style={{ marginBottom: '0.5rem' }}>رضا العملاء</h4>
-                <p>آلاف العملاء السعداء</p>
               </div>
             </div>
           </div>
@@ -252,6 +301,343 @@ export default function Products() {
 
         <Footer />
       </div>
+
+      <style jsx>{`
+        .luxury-products {
+          min-height: 100vh;
+          background: var(--cream);
+        }
+
+        .luxury-products.loaded {
+          animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
+        /* Products Hero */
+        .products-hero {
+          position: relative;
+          height: 40vh;
+          min-height: 300px;
+          background: linear-gradient(135deg, var(--primary), #333);
+          display: flex;
+          align-items: center;
+          overflow: hidden;
+        }
+
+        .hero-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.3);
+          z-index: 1;
+        }
+
+        .hero-content {
+          position: relative;
+          z-index: 2;
+          text-align: center;
+          color: white;
+        }
+
+        .page-title {
+          font-size: 2.5rem;
+          font-weight: 700;
+          margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+          font-size: 1.2rem;
+          opacity: 0.9;
+          max-width: 600px;
+          margin: 0 auto;
+        }
+
+        /* Filters Section */
+        .filters-luxury {
+          padding: 3rem 0;
+        }
+
+        .filters-wrapper {
+          display: grid;
+          grid-template-columns: 280px 1fr;
+          gap: 3rem;
+        }
+
+        .filters-sidebar {
+          background: white;
+          padding: 2rem;
+          border-radius: 20px;
+          box-shadow: var(--shadow);
+          height: fit-content;
+          position: sticky;
+          top: 100px;
+        }
+
+        .filters-title {
+          font-size: 1.3rem;
+          margin-bottom: 2rem;
+          color: var(--primary);
+          font-weight: 600;
+        }
+
+        .filter-group {
+          margin-bottom: 2rem;
+        }
+
+        .filter-label {
+          display: block;
+          margin-bottom: 0.75rem;
+          font-weight: 600;
+          color: var(--text);
+        }
+
+        .search-input-wrapper {
+          position: relative;
+        }
+
+        .search-input {
+          width: 100%;
+          padding: 0.875rem 1rem 0.875rem 2.5rem;
+          border: 2px solid rgba(201, 169, 97, 0.2);
+          border-radius: 12px;
+          font-size: 0.95rem;
+          transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+          outline: none;
+          border-color: var(--gold);
+          box-shadow: 0 0 0 3px rgba(201, 169, 97, 0.1);
+        }
+
+        .search-icon {
+          position: absolute;
+          left: 0.875rem;
+          top: 50%;
+          transform: translateY(-50%);
+          opacity: 0.5;
+        }
+
+        .category-options,
+        .price-options {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .category-option,
+        .price-option {
+          padding: 0.75rem 1rem;
+          border: 2px solid rgba(201, 169, 97, 0.2);
+          border-radius: 10px;
+          background: white;
+          text-align: right;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-weight: 500;
+        }
+
+        .category-option:hover,
+        .price-option:hover {
+          border-color: rgba(201, 169, 97, 0.4);
+          background: rgba(201, 169, 97, 0.05);
+        }
+
+        .category-option.active,
+        .price-option.active {
+          background: var(--gold);
+          color: var(--primary);
+          border-color: var(--gold);
+        }
+
+        /* Products Main */
+        .products-main {
+          min-height: 600px;
+        }
+
+        .products-topbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 2rem;
+          padding: 1.5rem;
+          background: white;
+          border-radius: 15px;
+          box-shadow: var(--shadow);
+        }
+
+        .results-count {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .count-number {
+          font-size: 1.5rem;
+          font-weight: 700;
+          color: var(--gold);
+        }
+
+        .count-text {
+          color: var(--muted);
+        }
+
+        .sort-wrapper {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
+        .sort-label {
+          font-weight: 600;
+          color: var(--text);
+        }
+
+        .sort-select {
+          padding: 0.5rem 1rem;
+          border: 2px solid rgba(201, 169, 97, 0.2);
+          border-radius: 8px;
+          background: white;
+          cursor: pointer;
+          font-size: 0.9rem;
+        }
+
+        .sort-select:focus {
+          outline: none;
+          border-color: var(--gold);
+        }
+
+        /* Products Grid */
+        .products-grid-luxury {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+          gap: 2rem;
+        }
+
+        .product-item {
+          transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* No Products State */
+        .no-products {
+          grid-column: 1 / -1;
+          text-align: center;
+          padding: 4rem 2rem;
+        }
+
+        .no-products-icon {
+          font-size: 4rem;
+          margin-bottom: 1rem;
+          opacity: 0.5;
+        }
+
+        .no-products-title {
+          font-size: 1.5rem;
+          margin-bottom: 1rem;
+          color: var(--primary);
+        }
+
+        .no-products-text {
+          color: var(--muted);
+          margin-bottom: 2rem;
+        }
+
+        /* Quality Assurance */
+        .quality-assurance {
+          padding: 4rem 0;
+          background: white;
+        }
+
+        .quality-content {
+          text-align: center;
+          max-width: 800px;
+          margin: 0 auto;
+        }
+
+        .quality-title {
+          font-size: 2rem;
+          margin-bottom: 1rem;
+          color: var(--primary);
+        }
+
+        .quality-subtitle {
+          font-size: 1.1rem;
+          color: var(--muted);
+          margin-bottom: 3rem;
+          line-height: 1.6;
+        }
+
+        .quality-features {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 2rem;
+        }
+
+        .quality-feature {
+          text-align: center;
+        }
+
+        .quality-icon {
+          font-size: 2.5rem;
+          margin-bottom: 1rem;
+        }
+
+        .quality-feature h4 {
+          font-size: 1.1rem;
+          margin-bottom: 0.5rem;
+          color: var(--primary);
+        }
+
+        .quality-feature p {
+          color: var(--muted);
+          font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+          .filters-wrapper {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+          }
+
+          .filters-sidebar {
+            position: static;
+            order: 2;
+          }
+
+          .products-main {
+            order: 1;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .page-title {
+            font-size: 2rem;
+          }
+
+          .products-grid-luxury {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+          }
+
+          .products-topbar {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+          }
+
+          .quality-features {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+          }
+        }
+      `}</style>
     </>
   )
 }

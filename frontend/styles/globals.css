@@ -1,10 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap');
 
-/* CSS Variables for Moroccan Theme */
+/* Premium Luxury Color Palette */
 :root {
+  /* Primary Colors */
+  --primary: #1a1a1a;
+  --gold: #C9A961;
+  --gold-light: #F4E4C1;
+  --leather: #8B4513;
+  --cream: #FAFAFA;
+  --text: #2D2D2D;
+  --muted: #9CA3AF;
+  
+  /* Legacy Colors (for compatibility) */
   --moroccan-red: #c1272d;
   --moroccan-blue: #0066cc;
-  --moroccan-gold: #d4af37;
+  --moroccan-gold: #C9A961;
   --moroccan-green: #07632a;
   --white: #ffffff;
   --beige: #f5f5dc;
@@ -13,8 +23,12 @@
   --text-dark: #212529;
   --text-light: #6c757d;
   --border-color: #dee2e6;
+  
+  /* Shadows */
   --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   --shadow-hover: 0 5px 20px rgba(0, 0, 0, 0.15);
+  --shadow-luxury: 0 10px 40px rgba(201, 169, 97, 0.15);
+  --shadow-gold: 0 4px 20px rgba(201, 169, 97, 0.3);
 }
 
 /* Reset and Base Styles */
@@ -29,51 +43,110 @@ html {
 }
 
 body {
-  font-family: 'Tajawal', 'Amiri', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--beige);
-  color: var(--text-dark);
+  font-family: 'Inter', 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--cream);
+  color: var(--text);
   line-height: 1.6;
   direction: rtl;
   text-align: right;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Typography */
+/* Premium Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Amiri', 'Tajawal', serif;
-  font-weight: 700;
+  font-family: 'Playfair Display', 'Tajawal', serif;
+  font-weight: 600;
   margin-bottom: 1rem;
-  color: var(--text-dark);
+  color: var(--primary);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 h1 {
-  font-size: 2.5rem;
-  color: var(--moroccan-red);
+  font-size: 3.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 h2 {
-  font-size: 2rem;
-  color: var(--moroccan-blue);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary);
 }
 
 h3 {
+  font-size: 1.875rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+h4 {
   font-size: 1.5rem;
-  color: var(--moroccan-green);
+  font-weight: 600;
+}
+
+h5 {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+h6 {
+  font-size: 1.125rem;
+  font-weight: 500;
 }
 
 p {
   margin-bottom: 1rem;
-  font-size: 1.1rem;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.luxury-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 1.25rem;
   line-height: 1.8;
 }
 
 a {
-  color: var(--moroccan-blue);
+  color: var(--primary);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
 a:hover {
-  color: var(--moroccan-red);
+  color: var(--gold);
+}
+
+.luxury-link {
+  color: var(--gold);
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.luxury-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  transition: width 0.3s ease;
+}
+
+.luxury-link:hover::after {
+  width: 100%;
 }
 
 /* Moroccan Pattern Background */
@@ -102,15 +175,17 @@ a:hover {
   padding: 0 20px;
 }
 
-/* Header Styles */
+/* Premium Header Styles */
 .header {
-  background: linear-gradient(135deg, var(--moroccan-red), var(--moroccan-blue));
+  background: rgba(26, 26, 26, 0.95);
+  backdrop-filter: blur(20px);
   color: var(--white);
   padding: 1rem 0;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-luxury);
   position: sticky;
   top: 0;
   z-index: 1000;
+  border-bottom: 1px solid rgba(201, 169, 97, 0.2);
 }
 
 .nav {
@@ -151,88 +226,128 @@ a:hover {
   transform: translateY(-2px);
 }
 
-/* Button Styles */
+/* Premium Button Styles */
 .btn {
   display: inline-block;
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 2rem;
   border: none;
-  border-radius: 25px;
+  border-radius: 50px;
   font-size: 1rem;
   font-weight: 500;
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-decoration: none;
-  font-family: 'Tajawal', sans-serif;
+  font-family: 'Inter', 'Tajawal', sans-serif;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.5px;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--moroccan-red), var(--moroccan-blue));
+  background: linear-gradient(135deg, var(--primary), #333);
   color: var(--white);
+  box-shadow: var(--shadow);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
+  box-shadow: var(--shadow-luxury);
+  background: linear-gradient(135deg, #333, var(--primary));
 }
 
-.btn-secondary {
-  background-color: var(--moroccan-gold);
-  color: var(--white);
+.btn-luxury {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--primary);
+  font-weight: 600;
+  box-shadow: var(--shadow-gold);
 }
 
-.btn-secondary:hover {
-  background-color: #b8941f;
+.btn-luxury:hover {
   transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(201, 169, 97, 0.4);
+  background: linear-gradient(135deg, var(--gold-light), var(--gold));
 }
 
 .btn-outline {
   background-color: transparent;
-  border: 2px solid var(--moroccan-red);
-  color: var(--moroccan-red);
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  font-weight: 500;
 }
 
 .btn-outline:hover {
-  background-color: var(--moroccan-red);
-  color: var(--white);
+  background-color: var(--gold);
+  color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-gold);
 }
 
-/* Card Styles */
+.btn-white {
+  background-color: var(--white);
+  color: var(--primary);
+  box-shadow: var(--shadow);
+}
+
+.btn-white:hover {
+  background-color: var(--cream);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Premium Card Styles */
 .card {
   background: var(--white);
-  border-radius: 15px;
+  border-radius: 20px;
   overflow: hidden;
   box-shadow: var(--shadow);
-  transition: all 0.3s ease;
-  border: 1px solid var(--border-color);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(201, 169, 97, 0.1);
+  position: relative;
 }
 
 .card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-hover);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-luxury);
+  border-color: rgba(201, 169, 97, 0.3);
 }
 
 .card-image {
   width: 100%;
-  height: 250px;
+  height: 320px;
   object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.card:hover .card-image {
+  transform: scale(1.05);
 }
 
 .card-content {
-  padding: 1.5rem;
+  padding: 2rem;
 }
 
 .card-title {
-  font-size: 1.3rem;
-  margin-bottom: 0.5rem;
-  color: var(--moroccan-blue);
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 .card-price {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
-  color: var(--moroccan-red);
+  color: var(--gold);
   margin: 1rem 0;
+  font-family: 'Playfair Display', serif;
+}
+
+.card-description {
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
 }
 
 /* Grid Layout */
@@ -498,5 +613,152 @@ a:hover {
   to {
     transform: translateY(0);
     opacity: 1;
+  }
+}
+
+/* Premium Luxury Styles */
+.luxury-gradient {
+  background: linear-gradient(135deg, var(--primary), #333);
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+}
+
+.luxury-shadow {
+  box-shadow: var(--shadow-luxury);
+}
+
+.gold-shadow {
+  box-shadow: var(--shadow-gold);
+}
+
+/* Premium Animations */
+.fade-in-up {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scale-in {
+  animation: scaleIn 0.6s ease forwards;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Premium Loading States */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Premium Hover Effects */
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-luxury);
+}
+
+.hover-glow {
+  transition: all 0.3s ease;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(201, 169, 97, 0.3);
+}
+
+/* Premium Typography */
+.text-gradient {
+  background: linear-gradient(135deg, var(--primary), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gold {
+  color: var(--gold);
+}
+
+.text-luxury {
+  color: var(--primary);
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+/* Premium Spacing */
+.section-luxury {
+  padding: 6rem 0;
+}
+
+.container-luxury {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Premium Grid */
+.grid-luxury {
+  display: grid;
+  gap: 2rem;
+}
+
+.grid-luxury-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-luxury-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-luxury-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1200px) {
+  .grid-luxury-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-luxury-2,
+  .grid-luxury-3,
+  .grid-luxury-4 {
+    grid-template-columns: 1fr;
+  }
+  
+  .section-luxury {
+    padding: 4rem 0;
+  }
+  
+  .container-luxury {
+    padding: 0 1rem;
   }
 }
