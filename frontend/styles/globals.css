@@ -1,34 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap');
 
-/* Premium Luxury Color Palette */
+/* Clean Color Palette */
 :root {
   /* Primary Colors */
-  --primary: #1a1a1a;
-  --gold: #C9A961;
-  --gold-light: #F4E4C1;
-  --leather: #8B4513;
-  --cream: #FAFAFA;
-  --text: #2D2D2D;
-  --muted: #9CA3AF;
-  
+  --primary: #c1272d;
+  --text: #333;
+  --muted: #666;
+  --white: #ffffff;
+  --light-gray: #f8f8f8;
+  --border-color: #e0e0e0;
+
   /* Legacy Colors (for compatibility) */
   --moroccan-red: #c1272d;
   --moroccan-blue: #0066cc;
   --moroccan-gold: #C9A961;
   --moroccan-green: #07632a;
-  --white: #ffffff;
   --beige: #f5f5dc;
   --dark-brown: #3e2723;
-  --light-gray: #f8f9fa;
   --text-dark: #212529;
   --text-light: #6c757d;
-  --border-color: #dee2e6;
-  
+
   /* Shadows */
   --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   --shadow-hover: 0 5px 20px rgba(0, 0, 0, 0.15);
-  --shadow-luxury: 0 10px 40px rgba(201, 169, 97, 0.15);
-  --shadow-gold: 0 4px 20px rgba(201, 169, 97, 0.3);
 }
 
 /* Reset and Base Styles */
@@ -44,7 +38,7 @@ html {
 
 body {
   font-family: 'Inter', 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--cream);
+  background-color: var(--white);
   color: var(--text);
   line-height: 1.6;
   direction: rtl;
@@ -67,10 +61,7 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
   font-size: 3.5rem;
   font-weight: 800;
-  background: linear-gradient(135deg, var(--primary), var(--gold));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text);
 }
 
 h2 {
@@ -175,179 +166,87 @@ a:hover {
   padding: 0 20px;
 }
 
-/* Premium Header Styles */
-.header {
-  background: rgba(26, 26, 26, 0.95);
-  backdrop-filter: blur(20px);
-  color: var(--white);
-  padding: 1rem 0;
-  box-shadow: var(--shadow-luxury);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  border-bottom: 1px solid rgba(201, 169, 97, 0.2);
-}
 
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-}
 
-.logo {
-  font-family: 'Amiri', serif;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--white);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.nav-links {
-  display: flex;
-  list-style: none;
-  gap: 2rem;
-  align-items: center;
-}
-
-.nav-link {
-  color: var(--white);
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  border-radius: 25px;
-  transition: all 0.3s ease;
-}
-
-.nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-}
-
-/* Premium Button Styles */
+/* Simple Button Styles */
 .btn {
   display: inline-block;
-  padding: 1rem 2rem;
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 50px;
+  border-radius: 4px;
   font-size: 1rem;
   font-weight: 500;
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   text-decoration: none;
   font-family: 'Inter', 'Tajawal', sans-serif;
-  position: relative;
-  overflow: hidden;
-  letter-spacing: 0.5px;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary), #333);
+  background: var(--primary);
   color: var(--white);
-  box-shadow: var(--shadow);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-luxury);
-  background: linear-gradient(135deg, #333, var(--primary));
-}
-
-.btn-luxury {
-  background: linear-gradient(135deg, var(--gold), var(--gold-light));
-  color: var(--primary);
-  font-weight: 600;
-  box-shadow: var(--shadow-gold);
-}
-
-.btn-luxury:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(201, 169, 97, 0.4);
-  background: linear-gradient(135deg, var(--gold-light), var(--gold));
+  background: #a02026;
 }
 
 .btn-outline {
   background-color: transparent;
-  border: 2px solid var(--gold);
-  color: var(--gold);
-  font-weight: 500;
+  border: 1px solid var(--primary);
+  color: var(--primary);
 }
 
 .btn-outline:hover {
-  background-color: var(--gold);
-  color: var(--primary);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-gold);
+  background-color: var(--primary);
+  color: var(--white);
 }
 
-.btn-white {
-  background-color: var(--white);
-  color: var(--primary);
-  box-shadow: var(--shadow);
-}
-
-.btn-white:hover {
-  background-color: var(--cream);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
-}
-
-/* Premium Card Styles */
+/* Simple Card Styles */
 .card {
   background: var(--white);
-  border-radius: 20px;
+  border-radius: 8px;
   overflow: hidden;
   box-shadow: var(--shadow);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(201, 169, 97, 0.1);
-  position: relative;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
 }
 
 .card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-luxury);
-  border-color: rgba(201, 169, 97, 0.3);
+  box-shadow: var(--shadow-hover);
 }
 
 .card-image {
   width: 100%;
-  height: 320px;
+  height: 250px;
   object-fit: cover;
-  transition: transform 0.4s ease;
-}
-
-.card:hover .card-image {
-  transform: scale(1.05);
 }
 
 .card-content {
-  padding: 2rem;
+  padding: 1.5rem;
 }
 
 .card-title {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   margin-bottom: 0.75rem;
-  color: var(--primary);
+  color: var(--text);
   font-weight: 600;
   line-height: 1.3;
 }
 
 .card-price {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--gold);
-  margin: 1rem 0;
-  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin: 0.5rem 0;
 }
 
 .card-description {
   color: var(--muted);
   line-height: 1.6;
   margin-bottom: 1rem;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 /* Grid Layout */

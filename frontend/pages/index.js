@@ -27,9 +27,9 @@ export default function Home() {
     ? "اكتشف مجموعتنا الفاخرة من الأحذية الجلدية المصنوعة يدوياً بفخر في المغرب"
     : "Découvrez notre collection luxueuse de chaussures en cuir, fabriquées à la main avec fierté au Maroc"
 
-  const brandStory = language === 'ar'
-    ? "في أبو أويس، نحافظ على تراث قرون من الحرفية المغربية. كل قطعة في مجموعتنا هي شهادة على مهارة وصبر الحرفيين المغاربة، مصنوعة من أجود الجلود الطبيعية بحب لا يضاهى للتفاصيل."
-    : "Chez Abououways, nous préservons un héritage de siècles d'artisanat marocain. Chaque pièce de notre collection est un témoignage du savoir-faire et de la patience des artisans marocains, fabriquée à partir des meilleurs cuirs naturels avec un amour inégalé du détail."
+   const brandStory = language === 'ar'
+     ? "انطلقت رحلتنا في عام 1955 من قلب مدينة طنجة، حيث بدأ جدنا الأول تجارة الملابس التقليدية بشغف عميق وحب كبير للتراث المغربي الأصيل. على مدى أكثر من 70 عاماً، تطورت خبرتنا وتوسعت معرفتنا، لكننا حافظنا دائماً على الأصالة والجودة التي ميزتنا منذ البداية."
+     : "Notre voyage a commencé en 1955 au cœur de la ville de Tanger, où notre grand-père a lancé le commerce de vêtements traditionnels avec une passion profonde et un grand amour pour le patrimoine marocain authentique. Depuis plus de 70 ans, notre expertise s'est développée et nos connaissances se sont élargies, mais nous avons toujours maintenu l'authenticité et la qualité qui nous ont distingués depuis le début."
 
   return (
     <>

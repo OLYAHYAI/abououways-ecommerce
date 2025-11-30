@@ -116,15 +116,14 @@ export default function Header() {
           position: sticky;
           top: 0;
           z-index: 1000;
-          background: rgba(26, 26, 26, 0.95);
-          backdrop-filter: blur(20px);
-          border-bottom: 1px solid rgba(201, 169, 97, 0.2);
+          background: white;
+          border-bottom: 1px solid #e0e0e0;
           transition: all 0.3s ease;
         }
 
         .header.scrolled {
-          background: rgba(26, 26, 26, 0.98);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+          background: #f8f8f8;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .nav {
@@ -159,7 +158,7 @@ export default function Header() {
         }
 
         .nav-link {
-          color: rgba(255, 255, 255, 0.8);
+          color: #333;
           text-decoration: none;
           font-weight: 500;
           font-size: 0.95rem;
@@ -175,12 +174,12 @@ export default function Header() {
           left: 0;
           width: 0;
           height: 2px;
-          background: linear-gradient(90deg, #C9A961, #F4E4C1);
+          background: #c1272d;
           transition: width 0.3s ease;
         }
 
         .nav-link:hover {
-          color: #C9A961;
+          color: #c1272d;
         }
 
         .nav-link:hover::after {
@@ -195,7 +194,7 @@ export default function Header() {
 
         .cart-icon {
           position: relative;
-          color: rgba(255, 255, 255, 0.8);
+          color: #333;
           text-decoration: none;
           padding: 0.5rem;
           border-radius: 50%;
@@ -206,8 +205,8 @@ export default function Header() {
         }
 
         .cart-icon:hover {
-          color: #C9A961;
-          background: rgba(201, 169, 97, 0.1);
+          color: #c1272d;
+          background: rgba(193, 39, 45, 0.1);
         }
 
         .cart-count {
@@ -247,7 +246,7 @@ export default function Header() {
           position: absolute;
           height: 2px;
           width: 100%;
-          background: #C9A961;
+          background: #333;
           border-radius: 2px;
           opacity: 1;
           left: 0;
@@ -288,9 +287,8 @@ export default function Header() {
           top: 100%;
           left: 0;
           right: 0;
-          background: rgba(26, 26, 26, 0.98);
-          backdrop-filter: blur(20px);
-          border-bottom: 1px solid rgba(201, 169, 97, 0.2);
+          background: white;
+          border-bottom: 1px solid #e0e0e0;
           transform: translateY(-100%);
           opacity: 0;
           visibility: hidden;
@@ -314,7 +312,7 @@ export default function Header() {
         }
 
         .mobile-nav-links a {
-          color: rgba(255, 255, 255, 0.8);
+          color: #333;
           text-decoration: none;
           font-size: 1.1rem;
           font-weight: 500;
@@ -324,7 +322,7 @@ export default function Header() {
         }
 
         .mobile-nav-links a:hover {
-          color: #C9A961;
+          color: #c1272d;
         }
 
         .mobile-nav-actions {

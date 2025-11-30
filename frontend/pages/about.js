@@ -42,18 +42,35 @@ export default function About() {
           <div className="container">
             <div className="grid grid-2" style={{ alignItems: 'center' }}>
               <div>
-                <h2 style={{ color: '#c1272d', marginBottom: '1.5rem' }}>
-                  {getTranslation(language, 'ourStory')}
-                </h2>
-                <p style={{ fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '1rem' }}>
-                  انطلق رحلتنا في عام 2010 بشغف عميق للتراث المغربي ورغبة في الحفاظ على الحرف التقليدية التي ورثناها عن أجدادنا. بدأنا كورشة صغيرة في قلب مراكش العتيقة، حيث كنا نعمل بجد لإنتاج أجود أنواع القندورة والنعال الجلدي.
-                </p>
-                <p style={{ fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '1rem' }}>
-                  اليوم، وبعد أكثر من عقد من الخبرة، أصبحنا من أبرز المتاجر المتخصصة في الملابس التقليدية المغربية، نخدم آلاف العملاء في جميع أنحاء المملكة وخارجها، ونفتخر بأن كل قطعة ننتجها تحمل جزءاً من روح المغرب الأصيلة.
-                </p>
-                <p style={{ fontSize: '1.1rem', lineHeight: '1.8' }}>
-                  نؤمن بأن الجودة والأصالة هما أساس نجاحنا، ونسعى دائماً لتقديم أفضل المنتجات التي تعكس ثقافتنا العريقة وتلبي توقعات عملائنا الكرام.
-                </p>
+                 <h2 style={{ color: '#c1272d', marginBottom: '1.5rem' }}>
+                   {getTranslation(language, 'ourStory')}
+                 </h2>
+                 <div style={{ fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '1rem' }}>
+                   <p style={{ fontWeight: 'bold', marginBottom: '1rem' }}>
+                     {language === 'ar' ? 'العنوان: قيسرية السعادة شارع مكة' : 'Adresse: Kissariat Saada, Avenue de la Mecque'}
+                   </p>
+                   <p style={{ marginBottom: '1rem' }}>
+                     {language === 'ar'
+                       ? 'قصتنا: انطلقت رحلتنا في عام 1955 من قلب مدينة طنجة، حيث بدأ جدنا الأول تجارة الملابس التقليدية بشغف عميق وحب كبير للتراث المغربي الأصيل. منذ ذلك الحين، انتقلت هذه الحرفة من جيل إلى جيل، من الأب إلى الابن، محافظين على نفس القيم والجودة التي أسسها أجدادنا.'
+                       : 'Notre Histoire: Notre voyage a commencé en 1955 au cœur de la ville de Tanger, où notre grand-père a lancé le commerce de vêtements traditionnels avec une passion profonde et un grand amour pour le patrimoine marocain authentique. Depuis lors, ce savoir-faire s\'est transmis de génération en génération, de père en fils, en préservant les mêmes valeurs et la même qualité établies par nos ancêtres.'
+                     }
+                   </p>
+                   <p style={{ marginBottom: '1rem' }}>
+                     {language === 'ar'
+                       ? 'على مدى أكثر من 70 عاماً، تطورت خبرتنا وتوسعت معرفتنا، لكننا حافظنا دائماً على الأصالة والجودة التي ميزتنا منذ البداية. اليوم، نفتخر بأننا نضع هذه الخبرة العريقة في خدمتكم، نقدم لكم أجود أنواع القندورة والنعال الجلدي الطبي المصنوع من جلد طبيعي 100%.'
+                       : 'Depuis plus de 70 ans, notre expertise s\'est développée et nos connaissances se sont élargies, mais nous avons toujours maintenu l\'authenticité et la qualité qui nous ont distingués depuis le début. Aujourd\'hui, nous sommes fiers de mettre cette riche expérience à votre service, en vous offrant les meilleures gandouras et babouches en cuir médical fabriquées à partir de cuir naturel 100%.'
+                     }
+                   </p>
+                   <p style={{ marginBottom: '1rem' }}>
+                     {language === 'ar'
+                       ? 'كل قطعة ننتجها تحمل جزءاً من تاريخنا العائلي وروح المغرب الأصيلة. نؤمن بأن الجودة والأصالة هما أساس نجاحنا، ونسعى دائماً لتقديم أفضل المنتجات التي تعكس ثقافتنا العريقة وتلبي توقعات عملائنا الكرام.'
+                       : 'Chaque pièce que nous produisons porte une partie de notre histoire familiale et l\'esprit authentique du Maroc. Nous croyons que la qualité et l\'authenticité sont la base de notre succès, et nous nous efforçons toujours d\'offrir les meilleurs produits qui reflètent notre riche culture et répondent aux attentes de nos précieux clients.'
+                     }
+                   </p>
+                   <p style={{ fontWeight: 'bold', fontSize: '1.2rem' }}>
+                     {language === 'ar' ? 'من طنجة... منذ 1955... جيلاً بعد جيل' : 'De Tanger... Depuis 1955... De génération en génération'}
+                   </p>
+                 </div>
               </div>
               <div>
                 <img 
