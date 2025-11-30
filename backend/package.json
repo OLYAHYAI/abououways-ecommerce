@@ -1,0 +1,34 @@
+{
+  "name": "moroccan-store-backend",
+  "version": "1.0.0",
+  "description": "Backend for Moroccan Traditional Clothing E-commerce Store",
+  "private": true,
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi",
+    "setup": "strapi install"
+  },
+  "dependencies": {
+    "@strapi/strapi": "4.24.4",
+    "@strapi/plugin-users-permissions": "4.24.4",
+    "@strapi/plugin-i18n": "4.24.4",
+    "@strapi/plugin-cloudinary": "4.24.4",
+    "sqlite3": "5.1.6",
+    "pg": "8.8.0",
+    "mysql": "2.18.1"
+  },
+  "author": {
+    "name": "Moroccan Store Team",
+    "email": "info@moroccan-store.com"
+  },
+  "strapi": {
+    "uuid": "moroccan-store-uuid"
+  },
+  "engines": {
+    "node": ">=18.0.0 <=20.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
+}

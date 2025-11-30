@@ -1,0 +1,87 @@
+version: '3.8'
+
+services:
+  # Strapi Backend
+  strapi:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: moroccan-store-strapi
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - DATABASE_CLIENT=sqlite
+      - DATABASE_FILENAME=./data/app.db
+      - JWT_SECRET=your-super-secret-jwt-key-change-in-production
+      - ADMIN_JWT_SECRET=your-super-secret-admin-jwt-key-change-in-production
+      - API_TOKEN_SALT=your-super-secret-api-token-salt
+      - APP_KEYS=your-super-secret-app-keys-change-in-production
+      - NODE_OPTIONS=--max-old-space-size=4096
+    ports:
+      - "1337:1337"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+      - strapi_data:/app/data
+    networks:
+      - moroccan-store-network
+
+  # Next.js Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: moroccan-store-frontend
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:1337
+      - NEXT_PUBLIC_STRAPI_URL=http://strapi:1337
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - strapi
+    networks:
+      - moroccan-store-network
+
+  # n8n Automation
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: moroccan-store-n8n
+    restart: unless-stopped
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=moroccan-store-2024
+      - WEBHOOK_URL=http://localhost:5678/
+      - GENERIC_TIMEZONE=Africa/Casablanca
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./n8n/workflows:/home/node/.n8n/workflows
+    networks:
+      - moroccan-store-network
+
+  # SQLite Database (for Strapi)
+  sqlite:
+    image: keinos/sqlite3:latest
+    container_name: moroccan-store-sqlite
+    volumes:
+      - strapi_data:/data
+    networks:
+      - moroccan-store-network
+
+volumes:
+  strapi_data:
+    driver: local
+  n8n_data:
+    driver: local
+
+networks:
+  moroccan-store-network:
+    driver: bridge

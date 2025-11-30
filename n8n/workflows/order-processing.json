@@ -1,0 +1,173 @@
+{
+  "name": "Moroccan Store Order Processing",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "order-webhook",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-1",
+      "name": "Order Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Validate order data\nconst orderData = $input.first().json;\n\n// Check required fields\nconst required = ['customer.name', 'customer.phone', 'customer.address'];\nconst missing = required.filter(field => {\n  const keys = field.split('.');\n  let value = orderData;\n  for (const key of keys) {\n    value = value?.[key];\n  }\n  return !value;\n});\n\nif (missing.length > 0) {\n  throw new Error(`Missing required fields: ${missing.join(', ')}`);\n}\n\n// Add timestamp and order ID\norderData.id = `ORD-${Date.now()}`;\norderData.timestamp = new Date().toISOString();\norderData.status = 'validated';\n\nreturn [{ json: orderData }];"
+      },
+      "id": "validate-order",
+      "name": "Validate Order",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Check inventory availability\nconst orderData = $input.first().json;\nconst items = orderData.items;\n\n// Simulate inventory check\nconst inventoryCheck = items.map(item => ({\n  productId: item.id,\n  name: item.name,\n  requestedQuantity: item.quantity,\n  available: true, // In real implementation, check actual inventory\n  artisan: item.artisan\n}));\n\n// Check if all items are available\nconst allAvailable = inventoryCheck.every(item => item.available);\n\nif (!allAvailable) {\n  throw new Error('Some items are out of stock');\n}\n\norderData.status = 'inventory-checked';\norderData.inventoryCheck = inventoryCheck;\n\nreturn [{ json: orderData }];"
+      },
+      "id": "check-inventory",
+      "name": "Check Inventory",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Send customer notifications\nconst orderData = $input.first().json;\nconst customer = orderData.customer;\n\n// Prepare email content\nconst emailContent = {\n  to: customer.email || 'customer@example.com',\n  subject: `تأكيد الطلب #${orderData.id} - المتجر المغربي`,\n  body: `\n    عزيزي/عزيزتي ${customer.name},\n    \n    نشكرك على طلبك من المتجر المغربي!\n    \n    تفاصيل الطلب:\n    رقم الطلب: ${orderData.id}\n    التاريخ: ${new Date(orderData.timestamp).toLocaleDateString('ar-MA')}\n    المجموع: ${orderData.total} درهم\n    \n    المنتجات:\n    ${orderData.items.map(item => \n      `- ${item.name} (${item.quantity}x) - ${item.price} درهم`\n    ).join('\\n')}\n    \n    عنوان التوصيل:\n    ${customer.address}\n    ${customer.city}\n    \n    سيتم معالجة طلبك في أقرب وقت ممكن.\n    \n    مع أطيب التحيات,\n    فريق المتجر المغربي\n  `\n};\n\n// Prepare SMS content\nconst smsContent = {\n  to: customer.phone,\n  message: `المتجر المغربي: تم استلام طلبك #${orderData.id}. المجموع: ${orderData.total} درهم. شكراً لتسوقك معنا!`\n};\n\norderData.status = 'customer-notified';\norderData.notifications = {\n  email: emailContent,\n  sms: smsContent\n};\n\nreturn [{ json: orderData }];"
+      },
+      "id": "notify-customer",
+      "name": "Notify Customer",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Notify artisans about new orders\nconst orderData = $input.first().json;\nconst items = orderData.items;\n\n// Group items by artisan\nconst artisanOrders = {};\n\nitems.forEach(item => {\n  if (!artisanOrders[item.artisan]) {\n    artisanOrders[item.artisan] = {\n      artisan: item.artisan,\n      orders: [],\n      totalItems: 0,\n      totalValue: 0\n    };\n  }\n  \n  artisanOrders[item.artisan].orders.push({\n    product: item.name,\n    quantity: item.quantity,\n    price: item.price,\n    material: item.material\n  });\n  \n  artisanOrders[item.artisan].totalItems += item.quantity;\n  artisanOrders[item.artisan].totalValue += item.price * item.quantity;\n});\n\n// Prepare notifications for each artisan\nconst artisanNotifications = Object.values(artisanOrders).map(artisanOrder => ({\n  artisan: artisanOrder.artisan,\n  message: `\n    طلب جديد من المتجر المغربي!\n    \n    المنتجات المطلوبة:\n    ${artisanOrder.orders.map(order => \n      `- ${order.product} (${order.quantity}x) - ${order.material}`\n    ).join('\\n')}\n    \n    إجمالي القطع: ${artisanOrder.totalItems}\n    القيمة الإجمالية: ${artisanOrder.totalValue} درهم\n    \n    يرجى البدء في الإنتاج في أقرب وقت ممكن.\n  `,\n  totalItems: artisanOrder.totalItems,\n  totalValue: artisanOrder.totalValue\n}));\n\norderData.status = 'artisans-notified';\norderData.artisanNotifications = artisanNotifications;\n\nreturn [{ json: orderData }];"
+      },
+      "id": "notify-artisans",
+      "name": "Notify Artisans",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1120, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Update analytics and reports\nconst orderData = $input.first().json;\n\n// Calculate analytics\nconst analytics = {\n  orderId: orderData.id,\n  timestamp: orderData.timestamp,\n  revenue: orderData.total,\n  itemCount: orderData.items.reduce((sum, item) => sum + item.quantity, 0),\n  averageOrderValue: orderData.total,\n  location: orderData.customer.city,\n  categories: [...new Set(orderData.items.map(item => item.category))],\n  artisans: [...new Set(orderData.items.map(item => item.artisan))],\n  paymentMethod: 'cash_on_delivery', // Default for demo\n  status: orderData.status\n};\n\n// Update daily/monthly analytics\nconst dailyStats = {\n  date: new Date().toISOString().split('T')[0],\n  orders: 1,\n  revenue: orderData.total,\n  items: analytics.itemCount\n};\n\norderData.status = 'analytics-updated';\norderData.analytics = analytics;\norderData.dailyStats = dailyStats;\n\nreturn [{ json: orderData }];"
+      },
+      "id": "update-analytics",
+      "name": "Update Analytics",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Log order for processing and create response\nconst orderData = $input.first().json;\n\n// Create order log\nconst orderLog = {\n  id: orderData.id,\n  timestamp: orderData.timestamp,\n  customer: {\n    name: orderData.customer.name,\n    phone: orderData.customer.phone,\n    location: orderData.customer.city\n  },\n  items: orderData.items.map(item => ({\n    id: item.id,\n    name: item.name,\n    quantity: item.quantity,\n    price: item.price,\n    artisan: item.artisan\n  })),\n  total: orderData.total,\n  status: 'pending_processing',\n  processingSteps: [\n    'Order validated',\n    'Inventory checked',\n    'Customer notified',\n    'Artisans notified',\n    'Analytics updated'\n  ]\n};\n\n// Create success response\nconst response = {\n  success: true,\n  orderId: orderData.id,\n  message: 'Order processed successfully',\n  estimatedDelivery: '3-5 business days',\n  nextSteps: [\n    'Artisans will start production',\n    'Quality check will be performed',\n    'Order will be shipped to your address',\n    'You will receive tracking information'\n  ]\n};\n\nconsole.log('Order processed:', JSON.stringify(orderLog, null, 2));\n\nreturn [{ \n  json: {\n    order: orderLog,\n    response: response\n  }\n}];"
+      },
+      "id": "log-order",
+      "name": "Log Order & Respond",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1560, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.response }}"
+      },
+      "id": "response",
+      "name": "Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1780, 300]
+    }
+  ],
+  "connections": {
+    "Order Webhook": {
+      "main": [
+        [
+          {
+            "node": "Validate Order",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Order": {
+      "main": [
+        [
+          {
+            "node": "Check Inventory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Inventory": {
+      "main": [
+        [
+          {
+            "node": "Notify Customer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify Customer": {
+      "main": [
+        [
+          {
+            "node": "Notify Artisans",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify Artisans": {
+      "main": [
+        [
+          {
+            "node": "Update Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Analytics": {
+      "main": [
+        [
+          {
+            "node": "Log Order & Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Order & Respond": {
+      "main": [
+        [
+          {
+            "node": "Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1"
+}
