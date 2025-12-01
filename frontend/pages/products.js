@@ -351,6 +351,7 @@ export default function Products() {
           font-size: 2.5rem;
           font-weight: 700;
           margin-bottom: 1rem;
+          color: white;
         }
 
         .page-subtitle {
@@ -358,6 +359,7 @@ export default function Products() {
           opacity: 0.9;
           max-width: 600px;
           margin: 0 auto;
+          color: white;
         }
 
         /* Filters Section */
