@@ -52,9 +52,9 @@ export default function Footer() {
             <h3>{getTranslation(language, 'contactInfo')}</h3>
             <ul>
               <li>📍 {getTranslation(language, 'address')}: {language === 'ar' ? 'قيسرية السعادة شارع المكسيك' : 'Kissariat Saada, Rue du Mexique'}</li>
-              <li>📞 {getTranslation(language, 'phone')}: +212 5XX-XXXXXX</li>
-              <li>📱 {getTranslation(language, 'mobile')}: +212 6XX-XXXXXX</li>
-              <li>✉️ {getTranslation(language, 'email')}: info@abououways.ma</li>
+              <li>📞 {getTranslation(language, 'phone')}: +212 630 969 496</li>
+              <li>📱 WhatsApp: +212 656 599 581</li>
+              <li>✉️ {getTranslation(language, 'email')}: contact@abouoways.ma</li>
             </ul>
           </div>
         </div>

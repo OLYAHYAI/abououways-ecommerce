@@ -392,10 +392,13 @@ export default function About() {
                   }
                 </p>
                 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '2rem' }}>
-                  <a href="tel:+212600000000" className="btn btn-luxury" style={{ fontSize: '1.1rem', padding: '1rem 2rem' }}>
+                  <a href="tel:+212630969496" className="btn btn-luxury" style={{ fontSize: '1.1rem', padding: '1rem 2rem' }}>
                     📞 {getTranslation(language, 'contactUs')}
                   </a>
-                  <a href="mailto:info@abououways.ma" className="btn btn-outline" style={{ fontSize: '1.1rem', padding: '1rem 2rem' }}>
+                  <a href="https://wa.me/212656599581" className="btn btn-primary" style={{ fontSize: '1.1rem', padding: '1rem 2rem' }}>
+                    💬 WhatsApp
+                  </a>
+                  <a href="mailto:contact@abouoways.ma" className="btn btn-outline" style={{ fontSize: '1.1rem', padding: '1rem 2rem' }}>
                     ✉️ {language === 'ar' ? 'راسلنا' : 'Contactez-nous'}
                   </a>
                 </div>
