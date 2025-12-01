@@ -202,10 +202,10 @@ export default function Cart() {
                         />
                         <div style={{ flex: '1' }}>
                           <h3 style={{ color: '#0066cc', marginBottom: '0.5rem' }}>
-                            {item.name}
+                            {item.name?.[language] || item.name}
                           </h3>
                           <p style={{ color: '#6c757d', marginBottom: '0.5rem' }}>
-                            {item.category} - {item.material}
+                            {item.category} - {item.material?.[language] || item.material}
                           </p>
                           <p style={{ color: '#d4af37', fontWeight: 'bold', fontSize: '1.2rem' }}>
                             {item.price} درهم

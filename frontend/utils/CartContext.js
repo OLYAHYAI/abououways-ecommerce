@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
+import { useLanguage } from './LanguageContext'
 
 const CartContext = createContext()
 
@@ -12,6 +13,7 @@ export function useCart() {
 }
 
 export function CartProvider({ children }) {
+  const { language } = useLanguage()
   const [cart, setCart] = useState([])
 
   // Load cart from localStorage on mount
@@ -42,12 +44,14 @@ export function CartProvider({ children }) {
             ? { ...item, quantity: item.quantity + 1 }
             : item
         )
-        toast.success(`تم تحديث كمية ${product.name} في السلة`)
+        const productName = product.name?.[language] || product.name
+        toast.success(`تم تحديث كمية ${productName} في السلة`)
         return updatedCart
       } else {
         // Add new item
         const newItem = { ...product, quantity: 1 }
-        toast.success(`تمت إضافة ${product.name} إلى السلة`)
+        const productName = product.name?.[language] || product.name
+        toast.success(`تمت إضافة ${productName} إلى السلة`)
         return [...prevCart, newItem]
       }
     })
@@ -58,7 +62,8 @@ export function CartProvider({ children }) {
       const item = prevCart.find(item => item.id === productId)
       const updatedCart = prevCart.filter(item => item.id !== productId)
       if (item) {
-        toast.success(`تم حذف ${item.name} من السلة`)
+        const itemName = item.name?.[language] || item.name
+        toast.success(`تم حذف ${itemName} من السلة`)
       }
       return updatedCart
     })
