@@ -322,7 +322,9 @@ export default function Products() {
           position: relative;
           height: 40vh;
           min-height: 300px;
-          background: linear-gradient(135deg, var(--primary), #333);
+          background: linear-gradient(135deg, rgba(194, 39, 45, 0.9), rgba(0, 102, 204, 0.9)), url('https://api.abououways.ma/uploads/Produit_page_acc856ff6a.png');
+          background-size: cover;
+          background-position: center;
           display: flex;
           align-items: center;
           overflow: hidden;

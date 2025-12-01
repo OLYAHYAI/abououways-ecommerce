@@ -131,7 +131,7 @@ export default function Cart() {
         
         {/* Page Header */}
         <section className="page-header" style={{
-          background: `linear-gradient(135deg, rgba(194, 39, 45, 0.9), rgba(0, 102, 204, 0.9)), url('https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=1600&h=400&fit=crop')`,
+          background: `linear-gradient(135deg, rgba(194, 39, 45, 0.9), rgba(0, 102, 204, 0.9)), url('https://api.abououways.ma/uploads/cart_db9a055e75.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           color: 'white',

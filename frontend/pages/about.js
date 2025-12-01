@@ -13,6 +13,70 @@ export default function About() {
     setIsLoaded(true)
   }, [])
 
+  const reviewsAR = [
+    {
+      name: "أحمد المرابط",
+      city: "الدار البيضاء",
+      rating: 5,
+      text: "جودة ممتازة! اشتريت حذاء جلدي وكانت الخامة رائعة. التوصيل سريع والخدمة محترمة جداً. أنصح بشدة!",
+      date: "منذ أسبوعين"
+    },
+    {
+      name: "فاطمة الزهراء",
+      city: "مراكش",
+      rating: 5,
+      text: "أفضل متجر للأحذية التقليدية! الجلد طبيعي 100% والتصميم أنيق. سعر معقول مقارنة بالجودة.",
+      date: "منذ شهر"
+    },
+    {
+      name: "يوسف بنعلي",
+      city: "طنجة",
+      rating: 5,
+      text: "خدمة ممتازة من البداية للنهاية. الحذاء مريح جداً ومناسب للاستعمال اليومي. شكراً لكم!",
+      date: "منذ 3 أسابيع"
+    },
+    {
+      name: "خديجة السعيدي",
+      city: "فاس",
+      rating: 4,
+      text: "منتجات أصيلة وجميلة. التوصيل استغرق وقت أطول قليلاً لكن يستحق الانتظار. راضية جداً عن الشراء.",
+      date: "منذ شهرين"
+    }
+  ]
+
+  const reviewsFR = [
+    {
+      name: "Sophie Martin",
+      city: "Paris",
+      rating: 5,
+      text: "Qualité exceptionnelle! J'ai acheté des babouches en cuir et elles sont magnifiques. Livraison rapide et service client très professionnel.",
+      date: "Il y a 2 semaines"
+    },
+    {
+      name: "Jean Dubois",
+      city: "Lyon",
+      rating: 5,
+      text: "Meilleur site pour les chaussures marocaines authentiques! Le cuir est 100% naturel et le design est élégant. Prix raisonnable pour la qualité.",
+      date: "Il y a 1 mois"
+    },
+    {
+      name: "Marie Lefebvre",
+      city: "Marseille",
+      rating: 5,
+      text: "Service excellent du début à la fin. Les chaussures sont très confortables et parfaites pour un usage quotidien. Merci beaucoup!",
+      date: "Il y a 3 semaines"
+    },
+    {
+      name: "Pierre Rousseau",
+      city: "Toulouse",
+      rating: 4,
+      text: "Produits authentiques et magnifiques. La livraison a pris un peu plus de temps mais ça vaut l'attente. Très satisfait de mon achat.",
+      date: "Il y a 2 mois"
+    }
+  ]
+
+  const reviews = language === 'ar' ? reviewsAR : reviewsFR
+
   return (
     <>
       <Head>
@@ -28,7 +92,7 @@ export default function About() {
         <section className="hero-luxury">
           <div className="hero-background">
             <img 
-              src="https://images.pexels.com/photos/1181356/pexels-photo-1181356.jpeg?auto=compress&cs=tinysrgb&w=1600&h=400&fit=crop" 
+              src="https://api.abououways.ma/uploads/about_us_page_5365950016.png" 
               alt="Moroccan Luxury"
               className="hero-image"
             />
@@ -256,69 +320,54 @@ export default function About() {
           </div>
         </section>
 
-        {/* Team */}
+
+
+        {/* Customer Reviews */}
         <section className="featured-products-luxury">
           <div className="container">
             <div className="section-header">
               <h2 className="section-title">
-                {getTranslation(language, 'ourTeam')}
+                {language === 'ar' ? 'آراء عملائنا' : 'Avis de nos clients'}
               </h2>
+              <p className="section-subtitle">
+                {language === 'ar' 
+                  ? 'ماذا يقول عملاؤنا عن تجربتهم مع منتجاتنا'
+                  : 'Ce que nos clients disent de leur expérience avec nos produits'
+                }
+              </p>
             </div>
-            <div className="products-grid">
-              <div className="product-wrapper">
-                <div className="coming-soon-text">
-                  <img 
-                    src="https://images.pexels.com/photos/837358/pexels-photo-837358.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop"
-                    alt={language === 'ar' ? 'المدير العام' : 'Directeur Général'}
-                    style={{
-                      width: '150px',
-                      height: '150px',
-                      borderRadius: '50%',
-                      margin: '0 auto 1rem',
-                      objectFit: 'cover'
-                    }}
-                  />
-                  <h3 style={{ color: '#0066cc', marginBottom: '0.5rem' }}>يوسف الأصيل</h3>
-                  <p style={{ color: '#d4af37', marginBottom: '1rem' }}>{language === 'ar' ? 'المدير العام' : 'Directeur Général'}</p>
-                  <p>{language === 'ar' ? 'خبير في تجارة الملابس التقليدية بخبرة تزيد عن 15 عاماً' : 'Expert en commerce de vêtements traditionnels avec plus de 15 ans d\'expérience'}</p>
+            <div className="reviews-grid">
+              {reviews.map((review, index) => (
+                <div 
+                  key={index} 
+                  className="review-card"
+                  style={{ 
+                    animationDelay: `${index * 0.1}s`,
+                    opacity: isLoaded ? 1 : 0,
+                    transform: isLoaded ? 'translateY(0)' : 'translateY(20px)'
+                  }}
+                >
+                  <div className="review-header">
+                    <div className="review-rating">
+                      {[...Array(5)].map((_, i) => (
+                        <span key={i} className={`star ${i < review.rating ? 'filled' : ''}`}>
+                          ★
+                        </span>
+                      ))}
+                    </div>
+                    <div className="review-date">{review.date}</div>
+                  </div>
+                  <div className="review-content">
+                    <p className="review-text">{review.text}</p>
+                  </div>
+                  <div className="review-footer">
+                    <div className="review-author">
+                      <div className="author-name">{review.name}</div>
+                      <div className="author-city">{review.city}</div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="product-wrapper">
-                <div className="coming-soon-text">
-                  <img 
-                    src="https://images.pexels.com/photos/762020/pexels-photo-762020.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop"
-                    alt={language === 'ar' ? 'مديرة التصميم' : 'Directrice du Design'}
-                    style={{
-                      width: '150px',
-                      height: '150px',
-                      borderRadius: '50%',
-                      margin: '0 auto 1rem',
-                      objectFit: 'cover'
-                    }}
-                  />
-                  <h3 style={{ color: '#0066cc', marginBottom: '0.5rem' }}>سارة التقنية</h3>
-                  <p style={{ color: '#d4af37', marginBottom: '1rem' }}>{language === 'ar' ? 'مديرة التصميم' : 'Directrice du Design'}</p>
-                  <p>{language === 'ar' ? 'مصممة فنية متخصصة في التراث المغربي والتصاميم العصرية' : 'Designer artistique spécialisée dans le patrimoine marocain et les designs contemporains'}</p>
-                </div>
-              </div>
-              <div className="product-wrapper">
-                <div className="coming-soon-text">
-                  <img 
-                    src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=300&h=300&fit=crop"
-                    alt={language === 'ar' ? 'رئيس الحرفيين' : 'Chef des Artisans'}
-                    style={{
-                      width: '150px',
-                      height: '150px',
-                      borderRadius: '50%',
-                      margin: '0 auto 1rem',
-                      objectFit: 'cover'
-                    }}
-                  />
-                  <h3 style={{ color: '#0066cc', marginBottom: '0.5rem' }}>عبد الله الحرفي</h3>
-                  <p style={{ color: '#d4af37', marginBottom: '1rem' }}>{language === 'ar' ? 'رئيس الحرفيين' : 'Chef des Artisans'}</p>
-                  <p>{language === 'ar' ? 'حرفي محترف يدير فريقاً من أمهر الخياطين والحرفيين' : 'Artisan professionnel dirigeant une équipe des meilleurs tailleurs et artisans'}</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
@@ -536,6 +585,90 @@ export default function About() {
           box-shadow: var(--shadow-luxury);
         }
 
+        /* Reviews Section */
+        .reviews-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+          gap: 2rem;
+          margin-bottom: 4rem;
+        }
+
+        .review-card {
+          background: white;
+          border-radius: 15px;
+          padding: 2rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          transition: all 0.3s ease;
+          border: 1px solid rgba(201, 169, 97, 0.1);
+        }
+
+        .review-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+          border-color: rgba(201, 169, 97, 0.2);
+        }
+
+        .review-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1.5rem;
+        }
+
+        .review-rating {
+          display: flex;
+          gap: 2px;
+        }
+
+        .star {
+          font-size: 1.2rem;
+          color: #ddd;
+          transition: color 0.2s ease;
+        }
+
+        .star.filled {
+          color: #d4af37;
+        }
+
+        .review-date {
+          font-size: 0.85rem;
+          color: #999;
+          font-style: italic;
+        }
+
+        .review-content {
+          margin-bottom: 1.5rem;
+        }
+
+        .review-text {
+          font-size: 1rem;
+          line-height: 1.6;
+          color: #333;
+          font-style: italic;
+        }
+
+        .review-footer {
+          border-top: 1px solid #f0f0f0;
+          padding-top: 1rem;
+        }
+
+        .review-author {
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
+        }
+
+        .author-name {
+          font-weight: 600;
+          color: #0066cc;
+          font-size: 1.1rem;
+        }
+
+        .author-city {
+          font-size: 0.9rem;
+          color: #666;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
           .hero-title {
@@ -551,12 +684,27 @@ export default function About() {
             gap: 2rem;
           }
 
+          .reviews-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+          }
+
           .brand-features {
             gap: 2rem;
           }
 
           .section-title {
             font-size: 2rem;
+          }
+
+          .review-card {
+            padding: 1.5rem;
+          }
+
+          .review-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
           }
         }
       `}</style>
