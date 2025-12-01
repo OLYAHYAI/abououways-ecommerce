@@ -9,28 +9,45 @@ import { useCart } from '../../utils/CartContext'
 import { useLanguage } from '../../utils/LanguageContext'
 import { getTranslation } from '../../utils/translations'
 
-export default function ProductDetail() {
+export async function getStaticPaths() {
+  const paths = products.map((product) => ({
+    params: { id: product.id.toString() }
+  }))
+  
+  return {
+    paths,
+    fallback: false
+  }
+}
+
+export async function getStaticProps({ params }) {
+  const product = products.find(p => p.id.toString() === params.id)
+  
+  return {
+    props: {
+      productData: product || null
+    }
+  }
+}
+
+export default function ProductDetail({ productData }) {
   const router = useRouter()
-  const { id } = router.query
   const { addToCart } = useCart()
   const { language, isRTL } = useLanguage()
   
-  const [product, setProduct] = useState(null)
+  const [product, setProduct] = useState(productData)
   const [selectedSize, setSelectedSize] = useState('')
   const [selectedColor, setSelectedColor] = useState('')
   const [quantity, setQuantity] = useState(1)
   const [activeImage, setActiveImage] = useState(0)
 
   useEffect(() => {
-    if (id) {
-      const foundProduct = products.find(p => p.id === parseInt(id))
-      setProduct(foundProduct)
-      if (foundProduct) {
-        setSelectedSize(foundProduct.sizes?.[0] || '')
-        setSelectedColor(foundProduct.colors?.[0] || '')
-      }
+    if (productData) {
+      setProduct(productData)
+      setSelectedSize(productData.sizes?.[0] || '')
+      setSelectedColor(productData.colors?.[0] || '')
     }
-  }, [id])
+  }, [productData])
 
   const handleAddToCart = () => {
     if (product) {
@@ -64,8 +81,8 @@ export default function ProductDetail() {
   return (
     <>
       <Head>
-        <title>{product.name} - {getTranslation(language, 'siteTitle')}</title>
-        <meta name="description" content={product.description} />
+        <title>{typeof product.name === 'object' ? product.name[language] : product.name} - {getTranslation(language, 'siteTitle')}</title>
+        <meta name="description" content={typeof product.description === 'object' ? product.description[language] : product.description} />
       </Head>
 
       <div className="moroccan-pattern" dir={isRTL ? 'rtl' : 'ltr'}>
@@ -73,13 +90,13 @@ export default function ProductDetail() {
 
         {/* Breadcrumb */}
         <div className="container" style={{ padding: '2rem 0 1rem' }}>
-          <nav style={{ fontSize: '0.9rem', color: '#6c757d' }}>
-            <Link href="/" style={{ color: '#0066cc' }}>{getTranslation(language, 'home')}</Link>
-            {' > '}
-            <Link href="/products" style={{ color: '#0066cc' }}>{getTranslation(language, 'products')}</Link>
-            {' > '}
-            <span>{product.name}</span>
-          </nav>
+            <nav style={{ fontSize: '0.9rem', color: '#6c757d' }}>
+              <Link href="/" style={{ color: '#0066cc' }}>{getTranslation(language, 'home')}</Link>
+              {' > '}
+              <Link href="/products" style={{ color: '#0066cc' }}>{getTranslation(language, 'products')}</Link>
+              {' > '}
+              <span>{typeof product.name === 'object' ? product.name[language] : product.name}</span>
+            </nav>
         </div>
 
         {/* Product Detail */}
@@ -116,7 +133,7 @@ export default function ProductDetail() {
                   color: '#c1272d', 
                   marginBottom: '1rem' 
                 }}>
-                  {product.name}
+                  {typeof product.name === 'object' ? product.name[language] : product.name}
                 </h1>
 
                 <div style={{ 
@@ -139,7 +156,7 @@ export default function ProductDetail() {
                     lineHeight: '1.8',
                     margin: 0 
                   }}>
-                    {product.description}
+                    {typeof product.description === 'object' ? product.description[language] : product.description}
                   </p>
                 </div>
 
@@ -155,12 +172,12 @@ export default function ProductDetail() {
                   )}
                   {product.material && (
                     <div style={{ marginBottom: '1rem' }}>
-                      <strong>{getTranslation(language, 'material')}:</strong> {product.material}
+                      <strong>{getTranslation(language, 'material')}:</strong> {typeof product.material === 'object' ? product.material[language] : product.material}
                     </div>
                   )}
                   {product.origin && (
                     <div style={{ marginBottom: '1rem' }}>
-                      <strong>{getTranslation(language, 'origin')}:</strong> {product.origin}
+                      <strong>{getTranslation(language, 'origin')}:</strong> {typeof product.origin === 'object' ? product.origin[language] : product.origin}
                     </div>
                   )}
                   <div style={{ marginBottom: '1rem' }}>
@@ -217,7 +234,7 @@ export default function ProductDetail() {
                       {getTranslation(language, 'color')}:
                     </label>
                     <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                      {product.colors.map(color => (
+                      {(typeof product.colors === 'object' ? product.colors[language] : product.colors).map(color => (
                         <button
                           key={color}
                           onClick={() => setSelectedColor(color)}

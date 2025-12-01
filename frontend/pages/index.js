@@ -80,7 +80,15 @@ export default function Home() {
             </div>
           </div>
           
-          <div className="scroll-indicator">
+          <div 
+            className="scroll-indicator" 
+            onClick={() => {
+              document.getElementById('featured-products')?.scrollIntoView({ 
+                behavior: 'smooth' 
+              })
+            }}
+            style={{ cursor: 'pointer' }}
+          >
             <div className="scroll-arrow"></div>
             <span>{language === 'ar' ? 'اسحب للأسفل' : 'Défiler'}</span>
           </div>
@@ -117,7 +125,7 @@ export default function Home() {
         </section>
 
         {/* Featured Products */}
-        <section className="featured-products-luxury">
+        <section id="featured-products" className="featured-products-luxury">
           <div className="container">
             <div className="section-header">
               <h2 className="section-title">

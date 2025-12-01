@@ -51,7 +51,7 @@ export default function Footer() {
           <div className="footer-section">
             <h3>{getTranslation(language, 'contactInfo')}</h3>
             <ul>
-              <li>📍 {getTranslation(language, 'address')}: 32 طريق محمد الخامس، مراكش</li>
+              <li>📍 {getTranslation(language, 'address')}: {language === 'ar' ? 'قيسرية السعادة شارع المكسيك' : 'Kissariat Saada, Rue du Mexique'}</li>
               <li>📞 {getTranslation(language, 'phone')}: +212 5XX-XXXXXX</li>
               <li>📱 {getTranslation(language, 'mobile')}: +212 6XX-XXXXXX</li>
               <li>✉️ {getTranslation(language, 'email')}: info@abououways.ma</li>
