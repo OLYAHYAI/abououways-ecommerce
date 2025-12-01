@@ -32,10 +32,14 @@ export default function ProductCard({ product }) {
       
       {/* Product Image */}
       <Link href={`/product/${product.id}`}>
-        <div className="image-container">
+        <div 
+          className="image-container"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           <img
             src={product.image}
-            alt={product.name[language] || product.name}
+            alt={product.name?.[language] || product.name}
             className="card-image"
           />
         </div>
@@ -44,22 +48,22 @@ export default function ProductCard({ product }) {
       <div className="card-content">
         {/* Title */}
         <h3 className="card-title">
-          {product.name[language] || product.name}
+          {product.name?.[language] || product.name}
         </h3>
         
         {/* Meta Information */}
         <div className="product-meta">
           <span className="material-info">
-            {product.material[language] || product.material}
+            {product.material?.[language] || product.material}
           </span>
           <span className="origin-info">
-            {product.origin[language] || product.origin}
+            {product.origin?.[language] || product.origin}
           </span>
         </div>
 
         {/* Description */}
         <p className="card-description">
-          {product.description[language] || product.description}
+          {product.description?.[language] || product.description}
         </p>
 
         {/* Price */}

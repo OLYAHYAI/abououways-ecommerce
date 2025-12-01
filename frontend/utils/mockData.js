@@ -2,88 +2,118 @@ export const products = [
   {
     id: 1,
     name: {
-      ar: "حذاء جلد مغربي فاخر - كلاسيك",
-      fr: "Chaussure Marocaine en Cuir de Luxe - Classique"
+      ar: "حذاء جلد كلاسيكي",
+      fr: "Chaussure Classique en Cuir"
     },
     description: {
-      ar: "حذاء جلد طبيعي 100% صناعة مغربية يدوية أصيلة. تصميم كلاسيكي أنيق يجمع بين الأصالة والراحة",
-      fr: "Chaussure en cuir naturel 100%, artisanat marocain authentique fait main. Design classique élégant alliant authenticité et confort"
+      ar: "الثمن جد مغري للحذاء الصاعد. جلد أصلي عالي الجودة، مريح للاستعمال اليومي. توصيل مجاني",
+      fr: "Prix très attractif pour cette chaussure montante. Cuir authentique de haute qualité, confortable pour un usage quotidien. Livraison gratuite"
     },
-    price: 1200,
+    price: 330,
     category: "shoes",
-    image: "/babouche1_9f3efc3483.png",
+    images: [
+      "https://api.abouoways.ma/uploads/1_916ac0ac25.jpg",
+      "https://api.abouoways.ma/uploads/Chaussure1b_5bd797c332.jpg",
+      "https://api.abouoways.ma/uploads/1c_6535a8fcdf.jpg"
+    ],
+    image: "https://api.abouoways.ma/uploads/1_916ac0ac25.jpg",
+    hoverImage: "https://api.abouoways.ma/uploads/Chaussure1b_5bd797c332.jpg",
     inStock: true,
     isNew: true,
     sizes: ["39", "40", "41", "42", "43", "44", "45"],
-    colors: {
-      ar: ["أسود", "بني", "كحلي"],
-      fr: ["Noir", "Marron", "Marine"]
-    },
+    colors: [
+      { name: { ar: "أسود", fr: "Noir" }, hex: "#000000", available: true },
+      { name: { ar: "بني", fr: "Marron" }, hex: "#8B4513", available: true }
+    ],
     material: {
       ar: "جلد طبيعي 100%",
       fr: "Cuir naturel 100%"
     },
     origin: {
-      ar: "مراكش",
-      fr: "Marrakech"
+      ar: "طنجة",
+      fr: "Tanger"
+    },
+    features: {
+      ar: ["توصيل مجاني", "جلد أصلي", "مريح"],
+      fr: ["Livraison gratuite", "Cuir authentique", "Confortable"]
     }
   },
   {
     id: 2,
     name: {
-      ar: "حذاء جلد مغربي فاخر - مودرن",
-      fr: "Chaussure Marocaine en Cuir de Luxe - Moderne"
+      ar: "حذاء شتوي طبي",
+      fr: "Chaussure d'Hiver Médicale"
     },
     description: {
-      ar: "حذاء جلد طبيعي 100% بتصميم عصري أنيق. يجمع بين التراث المغربي الأصيل واللمسات العصرية الراقية",
-      fr: "Chaussure en cuir naturel 100% au design moderne et élégant. Allie l'authenticité marocaine traditionnelle et les touches contemporaines sophistiquées"
+      ar: "حذاء طالع لفصل الشتاء. جلد أصلي مع فراشة طبية. متوفر بالأسود والبني. توصيل مجاني",
+      fr: "Chaussure montante pour l'hiver. Cuir authentique avec semelle médicale. Disponible en noir et marron. Livraison gratuite"
     },
-    price: 1350,
+    price: 340,
     category: "shoes",
-    image: "/babouche2_9bbe8faf14.png",
+    images: [
+      "https://api.abouoways.ma/uploads/Chaussure3_39b8d831c3.jpg",
+      "https://api.abouoways.ma/uploads/Chaussure3b_596b1b78e0.jpg",
+      "https://api.abouoways.ma/uploads/Chaussure3c_bc4cac8326.jpg"
+    ],
+    image: "https://api.abouoways.ma/uploads/Chaussure3_39b8d831c3.jpg",
+    hoverImage: "https://api.abouoways.ma/uploads/Chaussure3b_596b1b78e0.jpg",
     inStock: true,
     isNew: true,
     sizes: ["39", "40", "41", "42", "43", "44", "45"],
-    colors: {
-      ar: ["أسود", "بني", "كحلي"],
-      fr: ["Noir", "Marron", "Marine"]
-    },
+    colors: [
+      { name: { ar: "أسود", fr: "Noir" }, hex: "#000000", available: true },
+      { name: { ar: "بني", fr: "Marron" }, hex: "#8B4513", available: true }
+    ],
     material: {
       ar: "جلد طبيعي 100%",
       fr: "Cuir naturel 100%"
     },
     origin: {
-      ar: "فاس",
-      fr: "Fès"
+      ar: "طنجة",
+      fr: "Tanger"
+    },
+    features: {
+      ar: ["توصيل مجاني", "فراشة طبية", "مناسب للشتاء"],
+      fr: ["Livraison gratuite", "Semelle médicale", "Idéal pour l'hiver"]
     }
   },
   {
     id: 3,
     name: {
-      ar: "حذاء جلد مغربي فاخر - ملكي",
-      fr: "Chaussure Marocaine en Cuir de Luxe - Royal"
+      ar: "حذاء طبي جلد خالص",
+      fr: "Chaussure Médicale Cuir Pur"
     },
     description: {
-      ar: "حذاء جلد طبيعي 100% بتصميم ملكي فاخر. قطعة فنية فريدة تجسد عظمة التراث المغربي",
-      fr: "Chaussure en cuir naturel 100% au design royal luxueux. Pièce artistique unique incarnant la grandeur du patrimoine marocain"
+      ar: "حذاء طبي من الجلد الخالص. الثمن 330 درهم. متوفر بالأسود والبني. توصيل مجاني",
+      fr: "Chaussure médicale en cuir pur. Prix 330 DH. Disponible en noir et marron. Livraison gratuite"
     },
-    price: 1500,
+    price: 330,
     category: "shoes",
-    image: "/babouche3_3f97c55861.png",
+    images: [
+      "https://api.abouoways.ma/uploads/Chaussure6_1a96c1aaed.jpg",
+      "https://api.abouoways.ma/uploads/Chaussure6b_0b68248f24.jpg",
+      "https://api.abouoways.ma/uploads/Chaussure6c_88959baac5.jpg"
+    ],
+    image: "https://api.abouoways.ma/uploads/Chaussure6_1a96c1aaed.jpg",
+    hoverImage: "https://api.abouoways.ma/uploads/Chaussure6b_0b68248f24.jpg",
     inStock: true,
-    isNew: true,
+    isNew: false,
     sizes: ["39", "40", "41", "42", "43", "44", "45"],
-    colors: {
-      ar: ["أسود", "بني", "كحلي"],
-      fr: ["Noir", "Marron", "Marine"]
-    },
+    colors: [
+      { name: { ar: "أسود", fr: "Noir" }, hex: "#000000", available: true },
+      { name: { ar: "بني", fr: "Marron" }, hex: "#8B4513", available: true }
+    ],
     material: {
       ar: "جلد طبيعي 100%",
       fr: "Cuir naturel 100%"
     },
     origin: {
-      ar: "مراكش",
-      fr: "Marrakech"
+      ar: "طنجة",
+      fr: "Tanger"
+    },
+    features: {
+      ar: ["توصيل مجاني", "جلد خالص", "طبي"],
+      fr: ["Livraison gratuite", "Cuir pur", "Médical"]
     }
   }
 ]

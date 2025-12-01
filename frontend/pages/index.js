@@ -48,7 +48,7 @@ export default function Home() {
         <section className="hero-luxury">
           <div className="hero-background">
             <img 
-              src="https://api.abououways.ma/uploads/Home_page_302f2c30a9.png" 
+              src="https://api.abouoways.ma/uploads/Chaussure0_4a4803e22e.jpg" 
               alt="Moroccan Luxury"
               className="hero-image"
             />

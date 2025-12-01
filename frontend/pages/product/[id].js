@@ -39,7 +39,7 @@ export default function ProductDetail({ productData }) {
   const [selectedSize, setSelectedSize] = useState('')
   const [selectedColor, setSelectedColor] = useState('')
   const [quantity, setQuantity] = useState(1)
-  const [activeImage, setActiveImage] = useState(0)
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0)
 
   useEffect(() => {
     if (productData) {
@@ -81,8 +81,8 @@ export default function ProductDetail({ productData }) {
   return (
     <>
       <Head>
-        <title>{typeof product.name === 'object' ? product.name[language] : product.name} - {getTranslation(language, 'siteTitle')}</title>
-        <meta name="description" content={typeof product.description === 'object' ? product.description[language] : product.description} />
+        <title>{product.name?.[language] || product.name} - {getTranslation(language, 'siteTitle')}</title>
+        <meta name="description" content={product.description?.[language] || product.description} />
       </Head>
 
       <div className="moroccan-pattern" dir={isRTL ? 'rtl' : 'ltr'}>
@@ -95,7 +95,7 @@ export default function ProductDetail({ productData }) {
               {' > '}
               <Link href="/products" style={{ color: '#0066cc' }}>{getTranslation(language, 'products')}</Link>
               {' > '}
-              <span>{typeof product.name === 'object' ? product.name[language] : product.name}</span>
+              <span>{product.name?.[language] || product.name}</span>
             </nav>
         </div>
 
@@ -115,15 +115,45 @@ export default function ProductDetail({ productData }) {
                   boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
                 }}>
                   <img 
-                    src={product.image} 
+                    src={product.images ? product.images[selectedImageIndex] : product.image} 
                     alt={product.name}
                     style={{
                       width: '100%',
                       height: '100%',
-                      objectFit: 'cover'
+                      objectFit: 'cover',
+                      transition: 'opacity 0.3s ease'
                     }}
                   />
                 </div>
+                
+                {/* Image Thumbnails */}
+                {product.images && product.images.length > 1 && (
+                  <div style={{ 
+                    display: 'flex', 
+                    gap: '0.5rem', 
+                    marginTop: '1rem',
+                    justifyContent: 'center'
+                  }}>
+                    {product.images.map((img, index) => (
+                      <img
+                        key={index}
+                        src={img}
+                        alt={`${product.name} ${index + 1}`}
+                        onClick={() => setSelectedImageIndex(index)}
+                        style={{
+                          width: '80px',
+                          height: '80px',
+                          objectFit: 'cover',
+                          borderRadius: '8px',
+                          border: selectedImageIndex === index ? '2px solid #c1272d' : '1px solid #ddd',
+                          cursor: 'pointer',
+                          opacity: selectedImageIndex === index ? 1 : 0.7,
+                          transition: 'all 0.3s ease'
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Product Info */}
@@ -133,7 +163,7 @@ export default function ProductDetail({ productData }) {
                   color: '#c1272d', 
                   marginBottom: '1rem' 
                 }}>
-                  {typeof product.name === 'object' ? product.name[language] : product.name}
+                  {product.name?.[language] || product.name}
                 </h1>
 
                 <div style={{ 
@@ -156,7 +186,7 @@ export default function ProductDetail({ productData }) {
                     lineHeight: '1.8',
                     margin: 0 
                   }}>
-                    {typeof product.description === 'object' ? product.description[language] : product.description}
+                    {product.description?.[language] || product.description}
                   </p>
                 </div>
 
@@ -170,16 +200,16 @@ export default function ProductDetail({ productData }) {
                       <strong>{getTranslation(language, 'artisan')}:</strong> {product.artisan}
                     </div>
                   )}
-                  {product.material && (
-                    <div style={{ marginBottom: '1rem' }}>
-                      <strong>{getTranslation(language, 'material')}:</strong> {typeof product.material === 'object' ? product.material[language] : product.material}
-                    </div>
-                  )}
-                  {product.origin && (
-                    <div style={{ marginBottom: '1rem' }}>
-                      <strong>{getTranslation(language, 'origin')}:</strong> {typeof product.origin === 'object' ? product.origin[language] : product.origin}
-                    </div>
-                  )}
+                   {product.material && (
+                     <div style={{ marginBottom: '1rem' }}>
+                       <strong>{getTranslation(language, 'material')}:</strong> {product.material?.[language] || product.material}
+                     </div>
+                   )}
+                   {product.origin && (
+                     <div style={{ marginBottom: '1rem' }}>
+                       <strong>{getTranslation(language, 'origin')}:</strong> {product.origin?.[language] || product.origin}
+                     </div>
+                   )}
                   <div style={{ marginBottom: '1rem' }}>
                     <strong>{getTranslation(language, 'availability')}:</strong>{' '}
                     <span style={{ color: product.inStock ? '#28a745' : '#dc3545' }}>
@@ -234,25 +264,38 @@ export default function ProductDetail({ productData }) {
                       {getTranslation(language, 'color')}:
                     </label>
                     <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                      {(typeof product.colors === 'object' ? product.colors[language] : product.colors).map(color => (
+                      {product.colors.map((color) => (
                         <button
-                          key={color}
+                          key={color.hex}
                           onClick={() => setSelectedColor(color)}
                           style={{
-                            padding: '0.75rem 1.5rem',
-                            border: selectedColor === color ? '2px solid #c1272d' : '2px solid #dee2e6',
-                            backgroundColor: selectedColor === color ? '#c1272d' : 'white',
-                            color: selectedColor === color ? 'white' : '#333',
-                            borderRadius: '8px',
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: '50%',
+                            backgroundColor: color.hex,
+                            border: selectedColor?.hex === color.hex ? '3px solid #c1272d' : '2px solid #ddd',
                             cursor: 'pointer',
-                            fontWeight: '500',
-                            transition: 'all 0.3s'
+                            position: 'relative',
+                            transition: 'all 0.3s ease'
                           }}
+                          title={color.name[language]}
                         >
-                          {color}
+                          {selectedColor?.hex === color.hex && (
+                            <span style={{ 
+                              position: 'absolute', 
+                              top: '50%', 
+                              left: '50%', 
+                              transform: 'translate(-50%, -50%)',
+                              color: 'white',
+                              fontSize: '1.2rem'
+                            }}>✓</span>
+                          )}
                         </button>
                       ))}
                     </div>
+                    <p style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: '#666' }}>
+                      {getTranslation(language, 'selectedColor')}: {selectedColor?.name?.[language] || ''}
+                    </p>
                   </div>
                 )}
 

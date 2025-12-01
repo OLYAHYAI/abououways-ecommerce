@@ -118,7 +118,17 @@ export const translations = {
     // Meta
     siteTitle: 'Abououways.ma - ملابس تقليدية مغربية',
     siteDescription: 'متجر إلكتروني للملابس التقليدية المغربية الأصلية - القندورة والأحذية الجلدية',
-    keywords: 'قندورة, أحذية جلد, ملابس مغربية, تقليدية, جلد, حرير'
+    keywords: 'قندورة, أحذية جلد, ملابس مغربية, تقليدية, جلد, حرير',
+    
+    // New translations
+    selectedColor: 'اللون المختار',
+    freeDelivery: 'توصيل مجاني',
+    medical: 'طبي',
+    currency: 'درهم',
+    backToProducts: 'العودة للمنتجات',
+    productNotFound: 'المنتج غير موجود',
+    addedToCart: 'تمت الإضافة إلى سلة التسوق',
+    added: 'تمت الإضافة'
   },
   
   fr: {
@@ -240,7 +250,17 @@ export const translations = {
     // Meta
     siteTitle: 'Abououways.ma - Vêtements traditionnels marocains',
     siteDescription: 'Boutique en ligne de vêtements traditionnels marocains authentiques - Gandoura et chaussures en cuir',
-    keywords: 'gandoura, chaussures cuir, vêtements marocains, traditionnel, cuir, soie'
+    keywords: 'gandoura, chaussures cuir, vêtements marocains, traditionnel, cuir, soie',
+    
+    // New translations
+    selectedColor: 'Couleur sélectionnée',
+    freeDelivery: 'Livraison gratuite',
+    medical: 'Médical',
+    currency: 'DH',
+    backToProducts: 'Retour aux produits',
+    productNotFound: 'Produit non trouvé',
+    addedToCart: 'Ajouté au panier',
+    added: 'Ajouté'
   }
 }
 
