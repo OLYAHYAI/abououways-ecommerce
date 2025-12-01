@@ -120,7 +120,8 @@ export default function ProductDetail({ productData }) {
                     style={{
                       width: '100%',
                       height: '100%',
-                      objectFit: 'cover',
+                      objectFit: 'contain',
+                      backgroundColor: '#f8f9fa',
                       transition: 'opacity 0.3s ease'
                     }}
                   />
@@ -143,7 +144,8 @@ export default function ProductDetail({ productData }) {
                         style={{
                           width: '80px',
                           height: '80px',
-                          objectFit: 'cover',
+                          objectFit: 'contain',
+                          backgroundColor: '#f8f9fa',
                           borderRadius: '8px',
                           border: selectedImageIndex === index ? '2px solid #c1272d' : '1px solid #ddd',
                           cursor: 'pointer',

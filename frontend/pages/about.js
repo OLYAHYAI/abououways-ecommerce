@@ -91,11 +91,16 @@ export default function About() {
         {/* Premium Hero Section */}
         <section className="hero-luxury">
           <div className="hero-background">
-            <img 
-              src="https://api.abououways.ma/uploads/about_us_page_5365950016.png" 
-              alt="Moroccan Luxury"
+            <div 
               className="hero-image"
-            />
+              style={{
+                background: `linear-gradient(135deg, rgba(194, 39, 45, 0.9), rgba(0, 102, 204, 0.9)), url('https://api.abououways.ma/uploads/cart_db9a055e75.png')`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                width: '100%',
+                height: '100%'
+              }}
+            ></div>
             <div className="hero-overlay"></div>
           </div>
           
